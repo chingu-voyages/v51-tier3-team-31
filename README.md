@@ -36,7 +36,7 @@ coding!
 
 - Adam Honvedo: [GitHub](https://github.com/Homvi) / [LinkedIn](https://www.linkedin.com/in/adamhonvedo/)
 - Cristiano Valente: [GitHub](https://github.com/cris-valente) / [LinkedIn](https://www.linkedin.com/in/cristiano-valente-3943092a1/)
-- Teammate name #3: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Damilola Oshinowo: [GitHub](https://github.com/dami-boy) / [LinkedIn](www.linkedin.com/in/damilola-oshinowo)
 
   ...
 
