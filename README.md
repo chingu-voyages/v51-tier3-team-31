@@ -36,6 +36,7 @@ coding!
 
 - Adam Honvedo: [GitHub](https://github.com/Homvi) / [LinkedIn](https://www.linkedin.com/in/adamhonvedo/)
 - Tomislav Dukez: [GitHub](https://github.com/tomdu3) / [LinkedIn](https://www.linkedin.com/in/tomislav-dukez-bb2349231/)
+- Abderrahim amzaourou [Github](https://github.com/abderrahimAMZ) / [LinkedIn](https://www.linkedin.com/in/abderrahim-amzaourou-865351245/)
 
   ...
 
