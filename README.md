@@ -35,9 +35,8 @@ your repo access and to practice PR'ing with your team _before_ you start
 coding!
 
 - Adam Honvedo: [GitHub](https://github.com/Homvi) / [LinkedIn](https://www.linkedin.com/in/adamhonvedo/)
+- Cristiano Valente: [GitHub](https://github.com/cris-valente) / [LinkedIn](https://www.linkedin.com/in/cristiano-valente-3943092a1/)
+- Damilola Oshinowo: [GitHub](https://github.com/dami-boy) / [LinkedIn](www.linkedin.com/in/damilola-oshinowo)
+- Carlos Morais: [GitHub](https://github.com/Morais-C) / [LinkedIn](https://www.linkedin.com/in/carlosmoraisprofile/)
 - Tomislav Dukez: [GitHub](https://github.com/tomdu3) / [LinkedIn](https://www.linkedin.com/in/tomislav-dukez-bb2349231/)
 - Abderrahim amzaourou [Github](https://github.com/abderrahimAMZ) / [LinkedIn](https://www.linkedin.com/in/abderrahim-amzaourou-865351245/)
-
-  ...
-
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
