@@ -6,13 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  // provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model ExpenseGroup {
   id        String      @id @default(uuid())
-  name      String
+  name      String  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
