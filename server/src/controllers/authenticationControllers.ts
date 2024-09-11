@@ -63,7 +63,7 @@ export const googleCallback = async (req: Request, res: Response) => {
         sameSite: "strict",
       });
 
-      // Redirect the user to the desired location (e.g., home page)
+      // TODO: Redirect the user to the desired location (here root)
       res.redirect("/");
     } catch (error) {
       console.error("Error during authentication:", error);
