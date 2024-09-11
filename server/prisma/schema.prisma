@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -20,4 +20,12 @@ model ExpenseGroup {
 
   // Relations
   // comments Elements[]      
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  googleId  String   @unique
+  createdAt DateTime @default(now())
 }
