@@ -1,6 +1,11 @@
 import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+
 import ExpenseGroupRouter from "./routes/expense-group.route";
+import CategoryRouter from "./routes/category.route";
+import UserRouter from "./routes/user.route";
+import ExpenseRouter from "./routes/expense.route";
+import UserExpenseGroupRouter from "./routes/user-expense-group.route";
 
 export const prisma = new PrismaClient();
 
@@ -12,6 +17,10 @@ async function main() {
 
   // Register API routes
   app.use("/api/v1/expense-group", ExpenseGroupRouter);
+  app.use("/api/v1/category", CategoryRouter);
+  app.use("/api/v1/user", UserRouter);
+  app.use("/api/v1/expense", ExpenseRouter);
+  app.use("/api/v1/user-expense-group", UserExpenseGroupRouter);
 
   // Catch unregistered routes
   app.all("*", (req: Request, res: Response) => {
