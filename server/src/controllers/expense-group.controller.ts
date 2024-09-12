@@ -6,10 +6,9 @@ const createExpenseGroup = async (req: Request, res: Response) => {
     const { id, name, description, budget } = req.body;
     const newExpenseGroup = await prisma.expenseGroup.create({
       data: {
-        id,
         name,
-        description,
-        budget,
+        description: description || null,
+        budget: parseFloat(budget),
       },
     });
     res.status(201).json(newExpenseGroup);
@@ -22,10 +21,9 @@ const getExpenseGroupById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const expenseGroup = await prisma.expenseGroup.findUnique({
-      where: {
-        id: id,
-      },
+      where: {id},
     });
+
     if (expenseGroup) {
       res.status(200).json(expenseGroup);
     } else {
@@ -52,13 +50,11 @@ const updateExpenseGroup = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
     const { name, description, budget } = req.body;
     const updatedExpenseGroup = await prisma.expenseGroup.update({
-      where: {
-        id: id,
-      },
+      where: { id },
       data: {
         name,
-        description,
-        budget,
+        description: description || null,
+        budget: parseFloat(budget),
       },
     });
     res.status(200).json(updatedExpenseGroup);
@@ -71,9 +67,7 @@ const deleteExpenseGroup = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const deletedExpenseGroup = await prisma.expenseGroup.delete({
-      where: {
-        id: id,
-      },
+      where: { id },
     });
     res.status(200).json(deletedExpenseGroup);
   } catch (e) {

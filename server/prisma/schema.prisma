@@ -29,24 +29,7 @@ datasource db {
 
 model User {
   id       Int    @id @default(autoincrement())
-  googleId String @map("google_id")
-  name     String
-  email    String @unique
-
-  // Timestamps
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  // Relations
-  UserExpenseGroup UserExpenseGroup[]
-
-  // Mapping table name in DB
-  @@map("users")
-}
-
-model User {
-  id       Int    @id @default(autoincrement())
-  googleId String @map("google_id")
+  googleId String @map("google_id") @unique
   name     String
   email    String @unique
 
@@ -64,7 +47,7 @@ model User {
 model ExpenseGroup {
   id          Int     @id @default(autoincrement())
   name        String
-  description String
+  description String?
   budget      Decimal @default(0) @db.Decimal(10, 2)
 
   // Timestamps
