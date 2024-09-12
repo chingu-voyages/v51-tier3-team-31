@@ -1,10 +1,15 @@
 import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+
 import ExpenseGroupRouter from "./routes/expense-group.route";
 import authenticationRoutes from "./routes/authenticationRoutes";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import "./config/passportConfig";
+import CategoryRouter from "./routes/category.route";
+import UserRouter from "./routes/user.route";
+import ExpenseRouter from "./routes/expense.route";
+import UserExpenseGroupRouter from "./routes/user-expense-group.route";
 
 export const prisma = new PrismaClient();
 
