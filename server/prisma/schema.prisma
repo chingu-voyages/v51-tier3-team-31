@@ -9,6 +9,14 @@
 // createdAt - This field is automatically set to the date and time when the document is first created. 
 // updatedAt - This field is automatically set to the date and time whenever the document is updated.
 
+// NOTES:
+// @@map("....") is used to map table names on DB
+// @map("....") is used to map field names on DB
+
+// How Timestamps Work: 
+// createdAt - This field is automatically set to the date and time when the document is first created. 
+// updatedAt - This field is automatically set to the date and time whenever the document is updated.
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,6 +24,23 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  googleId String @map("google_id")
+  name     String
+  email    String @unique
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  UserExpenseGroup UserExpenseGroup[]
+
+  // Mapping table name in DB
+  @@map("users")
 }
 
 model User {
