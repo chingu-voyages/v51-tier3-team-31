@@ -1,6 +1,14 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// NOTES:
+// @@map("....") is used to map table names on DB
+// @map("....") is used to map field names on DB
+
+// How Timestamps Work: 
+// createdAt - This field is automatically set to the date and time when the document is first created. 
+// updatedAt - This field is automatically set to the date and time whenever the document is updated.
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,14 +19,97 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model ExpenseGroup {
-  id        String      @id @default(uuid())
-  name      String  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model User {
+  id       Int    @id @default(autoincrement())
+  googleId String @map("google_id")
+  name     String
+  email    String @unique
 
-  // ---  TBD -------
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  // comments Elements[]      
+  UserExpenseGroup UserExpenseGroup[]
+
+  // Mapping table name in DB
+  @@map("users")
+}
+
+model ExpenseGroup {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+  budget      Decimal @default(0) @db.Decimal(10, 2)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Lists from Relations
+  expenses         Expense[]
+  UserExpenseGroup UserExpenseGroup[]
+
+  // Mapping table name in DB
+  @@map("expense_groups")
+}
+
+model UserExpenseGroup {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  expenseGroupId     Int      @map("expense_group_id")
+  contributionWeight Int      @default(0) @map("contribution_weight") // Must be [0, 10, 20... 90, 100]
+  description        String
+  locked             Boolean  @default(false)
+  lockedAt           DateTime @map("locked_at")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+
+  // Constraints
+  @@unique([userId, expenseGroupId], name: "User_ExpenseGroup_Unique")
+  // Mapping table name in DB
+  @@map("user_expensegroup")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Lists from Relations
+  expenses Expense[]
+
+  // Mapping table name in DB
+  @@map("categories")
+}
+
+model Expense {
+  id             Int     @id @default(autoincrement())
+  expenseGroupId Int     @map("expense_group_id")
+  name           String
+  description    String
+  categoryId     Int     @map("category_id")
+  amount         Decimal @default(0) @db.Decimal(10, 2)
+  createdBy      Int
+  receiptURL     String  @map("receipt_url")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  category     Category     @relation(fields: [categoryId], references: [id])
+  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id])
+
+  // Mapping table name in DB
+  @@map("expenses")
 }
