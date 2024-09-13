@@ -25,6 +25,10 @@ async function main() {
 
   // Register API routes
   app.use("/api/v1/expense-group", ExpenseGroupRouter);
+  app.use("/api/v1/category", CategoryRouter);
+  app.use("/api/v1/expense", ExpenseRouter);
+  app.use("/api/v1/user-expense-group", UserExpenseGroupRouter);
+  app.use("/api/v1/user", UserRouter); // Just for testing 
 
   app.use("/api/v1/auth", authenticationRoutes)
 
