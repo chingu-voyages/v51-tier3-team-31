@@ -4,7 +4,6 @@ import { prisma } from "../server";
 const createExpense = async (req: Request, res: Response) => {
   try {
     const {
-      id,
       expenseGroupId,
       name,
       description,
@@ -13,15 +12,15 @@ const createExpense = async (req: Request, res: Response) => {
       createdBy,
       receiptURL,
     } = req.body;
+
     const newExpense = await prisma.expense.create({
       data: {
-        id,
-        expenseGroupId,
+        expenseGroupId: parseInt(expenseGroupId),
         name,
         description,
-        categoryId,
-        amount,
-        createdBy,
+        categoryId: parseInt(categoryId),
+        amount: parseInt(amount),
+        createdBy: parseInt(createdBy),
         receiptURL,
       },
     });
@@ -76,12 +75,12 @@ const updateExpense = async (req: Request, res: Response) => {
         id: id,
       },
       data: {
-        expenseGroupId,
+        expenseGroupId: parseInt(expenseGroupId),
         name,
         description,
-        categoryId,
-        amount,
-        createdBy,
+        categoryId: parseInt(categoryId),
+        amount: parseFloat(amount),
+        createdBy: parseInt(createdBy),
         receiptURL,
       },
     });
