@@ -2,6 +2,9 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import dotenv from 'dotenv';
 
+// Load environment variables from the .env file
+dotenv.config();
+
 passport.use(
   new GoogleStrategy(
     {
