@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import cors from 'cors';
 
 import ExpenseGroupRouter from "./routes/expense-group.route";
 import authenticationRoutes from "./routes/authenticationRoutes";
@@ -10,6 +11,7 @@ import CategoryRouter from "./routes/category.route";
 import UserRouter from "./routes/user.route";
 import ExpenseRouter from "./routes/expense.route";
 import UserExpenseGroupRouter from "./routes/user-expense-group.route";
+import corsOptions from "./config/corsConfig";
 
 export const prisma = new PrismaClient();
 
@@ -18,6 +20,7 @@ const port = 8080;
 
 async function main() {
 
+  app.use(cors(corsOptions));
   app.use(cookieParser());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
