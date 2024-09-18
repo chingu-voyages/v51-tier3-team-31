@@ -49,18 +49,18 @@ export const googleCallback = async (req: Request, res: Response) => {
       const refreshToken = generateRefreshToken(dbUser.id);
 
       // Set the cookies for the tokens
-      res.cookie("access_token", accessToken, {
+      res.cookie('access_token', accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         maxAge: 3600000, // 1 hour
-        sameSite: "strict",
+        sameSite: 'none',
       });
 
-      res.cookie("refresh_token", refreshToken, {
+      res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-        sameSite: "strict",
+        sameSite: 'none',
       });
 
       // TODO: Redirect the user to the desired location (here root)
@@ -76,16 +76,16 @@ export const googleCallback = async (req: Request, res: Response) => {
 
 // Logout Controller
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie("access_token", {
+  res.clearCookie('access_token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: 'none',
   });
 
-  res.clearCookie("refresh_token", {
+  res.clearCookie('refresh_token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: 'none',
   });
 
   res.json({ message: "Logged out successfully" });
