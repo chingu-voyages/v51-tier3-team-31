@@ -13,6 +13,8 @@ import ExpenseRouter from "./routes/expense.route";
 import UserExpenseGroupRouter from "./routes/user-expense-group.route";
 import corsOptions from "./config/corsConfig";
 
+import { openAPI_Definition } from "./schemas/openApiDefinition";
+
 export const prisma = new PrismaClient();
 
 const app = express();
@@ -25,6 +27,13 @@ async function main() {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(passport.initialize());
+
+
+  // Enable Swagger Documentation
+  const swaggerUi = require("swagger-ui-express");
+  const swaggerDocument = openAPI_Definition 
+  app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
   // Register API routes
   app.use("/api/v1/expense-groups", ExpenseGroupRouter);
