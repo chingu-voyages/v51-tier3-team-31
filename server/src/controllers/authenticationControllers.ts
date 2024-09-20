@@ -6,6 +6,9 @@ import {
 } from "../middleware/jwt";
 import { PrismaClient } from "@prisma/client";
 import { JwtPayload } from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 const prisma = new PrismaClient();
 
@@ -63,8 +66,14 @@ export const googleCallback = async (req: Request, res: Response) => {
         sameSite: 'none',
       });
 
-      // TODO: Redirect the user to the desired location (here root)
-      res.redirect("/");
+      const googleRedirectAddress = process.env.GOOGLE_REDIRECT_ADDRESS;
+
+      if (googleRedirectAddress) {
+        res.redirect(googleRedirectAddress);
+      } else {
+        return res.status(500).json({ message: 'Google redirect address is not configured' });
+      }
+
     } catch (error) {
       console.error("Error during authentication:", error);
       return res.status(500).json({ message: "Internal server error" });
