@@ -50,7 +50,16 @@ const getExpenseById = async (req: Request, res: Response) => {
 
 const getExpenses = async (req: Request, res: Response) => {
   try {
-    const expenses = await prisma.expense.findMany();
+    const filterExpenseGroupId = req.query["expense-group-id"];
+
+    const expenses = await prisma.expense.findMany({
+      where: filterExpenseGroupId // if this query param is not in URL, all records will be returned
+        ? {
+            expenseGroupId: { equals: Number(filterExpenseGroupId) },
+          }
+        : {},
+    });
+
     res.status(200).json(expenses);
   } catch (e) {
     res.status(500).json({ error: e });
