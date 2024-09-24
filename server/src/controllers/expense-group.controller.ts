@@ -21,7 +21,7 @@ const getExpenseGroupById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const expenseGroup = await prisma.expenseGroup.findUnique({
-      where: {id},
+      where: { id },
     });
 
     if (expenseGroup) {
@@ -38,7 +38,19 @@ const getExpenseGroupById = async (req: Request, res: Response) => {
 
 const getExpenseGroups = async (req: Request, res: Response) => {
   try {
-    const expenseGroups = await prisma.expenseGroup.findMany();
+    const filterUserId = req.query["user-id"];
+
+    const expenseGroups = await prisma.expenseGroup.findMany({
+      include: { UserExpenseGroup: true },
+      where: filterUserId // if this query param is not in URL, all records will be returned
+        ? {
+            UserExpenseGroup: {
+              some: { userId: Number(filterUserId) },
+            },
+          }
+        : {},
+    });
+
     res.status(200).json(expenseGroups);
   } catch (e) {
     res.status(500).json({ error: e });
