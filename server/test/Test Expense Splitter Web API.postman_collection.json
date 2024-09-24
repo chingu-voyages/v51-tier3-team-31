@@ -8,7 +8,139 @@
 	},
 	"item": [
 		{
-			"name": "ExpenseGroup",
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create a new User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"User #2\",\r\n    \"googleId\": \"user0002@gmail.com\",\r\n    \"email\": \"user0002@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"User #1 - Updated\",\r\n    \"googleId\": \"user0001@gmail.com\",\r\n    \"email\": \"user0001@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an User By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ExpenseGroups",
 			"item": [
 				{
 					"name": "Create a new Expense Group",
@@ -17,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"ExpenseGroup Test #1\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -43,7 +175,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"New ExpenseGroup Test #1\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1 Updated\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,20 +183,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group/0a980e98-ec68-47f5-b533-25f83929e9f1",
+							"raw": "{{baseUrl}}/expense-group/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-group",
-								"0a980e98-ec68-47f5-b533-25f83929e9f1"
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Expense Group By ID",
+					"name": "Get an Expense Group By ID",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -81,13 +213,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group/0a980e98-ec68-47f5-b533-25f83929e9f1",
+							"raw": "{{baseUrl}}/expense-group/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-group",
-								"0a980e98-ec68-47f5-b533-25f83929e9f1"
+								"1"
 							]
 						}
 					},
@@ -108,13 +240,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group/0a980e98-ec68-47f5-b533-25f83929e9f1",
+							"raw": "{{baseUrl}}/expense-group/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-group",
-								"0a980e98-ec68-47f5-b533-25f83929e9f1"
+								"1"
 							]
 						}
 					},
@@ -126,12 +258,485 @@
 						"method": "GET",
 						"header": [],
 						"url": {
+							"raw": "{{baseUrl}}/expense-groups",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Expense Groups For an User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense-groups",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense-groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invite a Participant to an Expense Group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
 							"raw": "{{baseUrl}}/expense-group",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-group"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Participants",
+			"item": [
+				{
+					"name": "Create a new Participant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"expenseGroupId\": 1,\r\n    \"contributionWeight\": 0,\r\n    \"description\": \"Description Sample\",\r\n    \"locked\": false,\r\n    \"lockedAt\": \"2024-09-10T17:43:02.424Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-expense-group",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-expense-group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Participant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": 1,\r\n    \"expenseGroupId\": 1,\r\n    \"contributionWeight\": 50,\r\n    \"description\": \"Description Sample - Updated\",\r\n    \"locked\": false,\r\n    \"lockedAt\": \"2024-09-10T17:43:02.424Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-expense-group/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-expense-group",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Participant By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user-expense-group/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user-expense-group",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Participant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/participant/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"participant",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/participants",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"participants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Participants From an Expense Group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/participants",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"participants"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create a new Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Category #1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Category #2 - Updated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/category/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"category",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Category By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/category/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"category",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/category/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/category",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Expenses",
+			"item": [
+				{
+					"name": "Create a new Expense",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n      \"expenseGroupId\":2,\r\n      \"name\":\"Expense Name 002\",\r\n      \"description\":\"Expense Dscription 002\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 300,\r\n      \"createdBy\": 1,\r\n      \"receiptURL\": \"htps://test.test/test001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expenses",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update an Expense",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n        \r\n        \"expenseGroupId\": 1,\r\n        \"name\": \"Expense Name 002\",\r\n        \"description\": \"Expense Dscription 002\",\r\n        \"categoryId\": 1,\r\n        \"amount\": \"500\",\r\n        \"createdBy\": 1,\r\n        \"receiptURL\": \"htps://test.test/test002\"\r\n      \r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get an Expense By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete an Expense",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Expenses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Expenses From an Expense Group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense"
 							]
 						}
 					},

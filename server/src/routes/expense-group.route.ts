@@ -9,4 +9,6 @@ router.get("/", ExpenseGroupController.getExpenseGroups);
 router.put("/:id", ExpenseGroupController.updateExpenseGroup);
 router.delete("/:id", ExpenseGroupController.deleteExpenseGroup);
 
+router.post("/invite-participant", ExpenseGroupController.inviteParticipant);
+
 export default router;
