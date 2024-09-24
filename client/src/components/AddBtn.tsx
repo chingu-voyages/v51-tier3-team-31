@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function AddBtn() {
     return (
             <div className="fixed bottom-3">

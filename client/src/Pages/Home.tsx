@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import AddBtn from '../components/AddBtn'
+import NewExpenseGroupFormModal from '../components/NewExpenseGroupFormModal'
 
 
 const Home = () => {
@@ -35,6 +36,7 @@ const Home = () => {
               )
             }
       </div>
+      <NewExpenseGroupFormModal />
       <AddBtn />
     </div>
 
