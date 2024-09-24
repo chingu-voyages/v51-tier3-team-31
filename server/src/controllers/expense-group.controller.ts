@@ -87,10 +87,57 @@ const deleteExpenseGroup = async (req: Request, res: Response) => {
   }
 };
 
+const inviteParticipant = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id); // the Expense Group Id
+    const { expenseGroupId, userEmail } = req.body; // the user email that is being invited
+
+    // Verify if user exists, and get it
+    const invitedUser = await prisma.user.findUnique({
+      where: { email: userEmail },
+    });
+
+    let invitedUserId = 0;
+    if (invitedUser) {
+      // If exists get the Id
+      invitedUserId = invitedUser.id;
+    } else {
+      // if not, create a new one, and get the Id
+      const newUser = await prisma.user.create({
+        data: {
+          name: "",
+          googleId: userEmail,
+          email: userEmail,
+        },
+      });
+      invitedUserId = newUser.id;
+    }
+
+    // Create the new participant
+    const newParticipant = await prisma.userExpenseGroup.create({
+      data: {
+        userId: invitedUserId,
+        expenseGroupId,
+        contributionWeight: 0,
+        description: "",
+        locked: false,
+        lockedAt: "2024-09-10T17:43:02.424Z",
+      },
+    });
+
+    // IMPORTANT: TODO: create new User (when needed) and create new Participant - should be on same DB Transaction!!
+
+    res.status(200).json(newParticipant);
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
+
 export default {
   createExpenseGroup,
   getExpenseGroupById,
   getExpenseGroups,
   updateExpenseGroup,
   deleteExpenseGroup,
+  inviteParticipant,
 };
