@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <div className="flex min-h-screen max-w-sm items-center flex-col bg-indigo-600">
-      <div className="bg-white flex flex-col gap-3 w-full justify-center items-center p-3">
+      <div className="flex flex-col gap-3 w-full justify-center items-center p-3">
           {
             expenseGroups && expenseGroups
               .map(expG =>
