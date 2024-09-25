@@ -3,12 +3,14 @@ import { prisma } from "../server";
 
 const createExpenseGroup = async (req: Request, res: Response) => {
   try {
-    const { id, name, description, budget } = req.body;
+    const { id, name, description, budget, createdBy } = req.body;
     const newExpenseGroup = await prisma.expenseGroup.create({
       data: {
+        id,
         name,
         description: description || null,
         budget: parseFloat(budget),
+        createdBy,
       },
     });
     res.status(201).json(newExpenseGroup);
@@ -41,10 +43,10 @@ const getExpenseGroups = async (req: Request, res: Response) => {
     const filterUserId = req.query["user-id"];
 
     const expenseGroups = await prisma.expenseGroup.findMany({
-      include: { UserExpenseGroup: true },
+      include: { userExpenseGroups: true },
       where: filterUserId // if this query param is not in URL, all records will be returned
         ? {
-            UserExpenseGroup: {
+            userExpenseGroups: {
               some: { userId: Number(filterUserId) },
             },
           }
