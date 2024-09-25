@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"User #2\",\r\n    \"googleId\": \"user0002@gmail.com\",\r\n    \"email\": \"user0002@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"name\": \"User #1\",\r\n    \"googleId\": \"user0001@gmail.com\",\r\n    \"email\": \"user0001@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,12 +25,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user",
+							"raw": "{{baseUrl}}/users",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user"
+								"users"
 							]
 						}
 					},
@@ -43,7 +43,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"User #1 - Updated\",\r\n    \"googleId\": \"user0001@gmail.com\",\r\n    \"email\": \"user0001@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"googleId\": \"username98@test.com\",\r\n    \"name\": \"User Name #98\",\r\n    \"email\": \"username98@test.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -51,13 +51,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/1",
+							"raw": "{{baseUrl}}/users/98",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user",
-								"1"
+								"users",
+								"98"
 							]
 						}
 					},
@@ -108,13 +108,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user/2",
+							"raw": "{{baseUrl}}/users/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user",
-								"2"
+								"users",
+								"1"
 							]
 						}
 					},
@@ -149,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000\r\n\r\n}",
+							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #001\",\r\n    \"description\": \"Description ExpenseGroup Test #001\",\r\n    \"budget\": 2000,\r\n    \"createdBy\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -157,12 +157,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group",
+							"raw": "{{baseUrl}}/expense-groups",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense-group"
+								"expense-groups"
 							]
 						}
 					},
@@ -175,7 +175,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1 Updated\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000\r\n\r\n}",
+							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1 Updated\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000,\r\n    \"createdBy\": 1 \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -183,12 +183,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group/1",
+							"raw": "{{baseUrl}}/expense-groups/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense-group",
+								"expense-groups",
 								"1"
 							]
 						}
@@ -213,12 +213,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group/1",
+							"raw": "{{baseUrl}}/expense-groups/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense-group",
+								"expense-groups",
 								"1"
 							]
 						}
@@ -240,12 +240,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group/1",
+							"raw": "{{baseUrl}}/expense-groups/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense-group",
+								"expense-groups",
 								"1"
 							]
 						}
@@ -275,12 +275,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/expense-groups",
+							"raw": "{{baseUrl}}/expense-groups?user-id=1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-groups"
+							],
+							"query": [
+								{
+									"key": "user-id",
+									"value": "1"
+								}
 							]
 						}
 					},
@@ -293,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #1\",\r\n    \"description\": \"Description ExpenseGroup Test #1\",\r\n    \"budget\": 1000\r\n\r\n}",
+							"raw": "{\r\n    \"expenseGroupId\": 1,\r\n    \"userEmail\": \"newusername@test.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -301,12 +307,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-group",
+							"raw": "{{baseUrl}}/expense-groups/invite-participant",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense-group"
+								"expense-groups",
+								"invite-participant"
 							]
 						}
 					},
@@ -358,12 +365,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user-expense-group/1",
+							"raw": "{{baseUrl}}/participants/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user-expense-group",
+								"participants",
 								"1"
 							]
 						}
@@ -388,12 +395,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user-expense-group/1",
+							"raw": "{{baseUrl}}/participants/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user-expense-group",
+								"participants",
 								"1"
 							]
 						}
@@ -564,12 +571,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/category/1",
+							"raw": "{{baseUrl}}/categories/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"category",
+								"categories",
 								"1"
 							]
 						}
@@ -582,12 +589,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/category",
+							"raw": "{{baseUrl}}/categories",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -605,7 +612,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\r\n      \"expenseGroupId\":2,\r\n      \"name\":\"Expense Name 002\",\r\n      \"description\":\"Expense Dscription 002\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 300,\r\n      \"createdBy\": 1,\r\n      \"receiptURL\": \"htps://test.test/test001\"\r\n}",
+							"raw": "{\r\n\r\n      \"expenseGroupId\":1,\r\n      \"name\":\"Expense Name 001\",\r\n      \"description\":\"Expense Dscription 001\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 500,\r\n      \"createdBy\": 1,\r\n      \"receiptURL\": \"htps://test.test/test001\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -639,12 +646,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense/2",
+							"raw": "{{baseUrl}}/expenses/2",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense",
+								"expenses",
 								"2"
 							]
 						}
@@ -696,13 +703,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense/3",
+							"raw": "{{baseUrl}}/expenses/1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense",
-								"3"
+								"expenses",
+								"1"
 							]
 						}
 					},
@@ -714,12 +721,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/expense",
+							"raw": "{{baseUrl}}/expenses",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense"
+								"expenses"
 							]
 						}
 					},
@@ -731,12 +738,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/expense",
+							"raw": "{{baseUrl}}/expenses?expense-group-id=1",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense"
+								"expenses"
+							],
+							"query": [
+								{
+									"key": "expense-group-id",
+									"value": "1"
+								}
 							]
 						}
 					},
