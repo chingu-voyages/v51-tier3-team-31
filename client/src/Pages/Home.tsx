@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import AddBtn from '../components/AddBtn';
 import { useAuth } from '../hooks/useAuth';
 import NewExpenseGroupFormModal from '../components/NewExpenseGroupsFormModal';
+import { serverBaseUrl } from '../config';
 
 interface ExpenseGroup {
   id: number;
@@ -11,23 +12,31 @@ interface ExpenseGroup {
 }
 
 const Home = () => {
-  const serverBaseUrl = import.meta.env.VITE_SERVER_BASE_URL;
-  const url = `${serverBaseUrl}/api/v1/expense-groups`;
+  const { user } = useAuth();
 
   const [expenseGroups, setExpenseGroups] = useState<ExpenseGroup[]>([]);
 
-  const { user } = useAuth();
+  function getExpenseGroups() {
+    if (user?.id) {
+      const url = `${serverBaseUrl}/api/v1/expense-groups?user-id=${user.id}`;
+      axios
+        .get(url)
+        .then((res) => {
+          setExpenseGroups(res.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  }
 
   useEffect(() => {
-    axios
-      .get(url)
-      .then((res) => {
-        setExpenseGroups(res.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, [url]);
+    if (user?.id) {
+      getExpenseGroups();
+    }
+  }, [user?.id]);
+
+  console.log(expenseGroups);
 
   return (
     <div className="flex min-h-screen items-center flex-col bg-indigo-600">
@@ -47,7 +56,7 @@ const Home = () => {
             </div>
           ))}
       </div>
-      <NewExpenseGroupFormModal />
+      <NewExpenseGroupFormModal getExpenseGroups={getExpenseGroups}/>
       <AddBtn />
     </div>
   );
