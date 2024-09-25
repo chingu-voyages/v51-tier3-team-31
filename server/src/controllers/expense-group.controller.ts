@@ -13,6 +13,21 @@ const createExpenseGroup = async (req: Request, res: Response) => {
         createdBy,
       },
     });
+
+    // create the first Participant for this EXpenseGroup - the User that just created it
+    const newParticipant = await prisma.userExpenseGroup.create({
+      data: {
+        userId: createdBy,
+        expenseGroupId : newExpenseGroup.id,
+        contributionWeight: 0,
+        description: "This Expense Group was created by this User.",
+        locked: false,
+        lockedAt: "2000-01-01T00:00:00.001Z", // not relevant when locked = false; just to avoid the not null validation
+      },
+    });
+
+    // IMPORTANT - ToDo: Creating new ExpenseGroup and new Participant should be om the same DB Transaction, ensuring the database remains consistent and reliable
+
     res.status(201).json(newExpenseGroup);
   } catch (e) {
     res.status(500).json({ error: e });
@@ -23,6 +38,7 @@ const getExpenseGroupById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const expenseGroup = await prisma.expenseGroup.findUnique({
+      include: { userExpenseGroups: true, expenses: true },
       where: { id },
     });
 
