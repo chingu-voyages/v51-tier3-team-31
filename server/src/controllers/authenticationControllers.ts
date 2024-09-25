@@ -1,14 +1,13 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
-} from "../middleware/jwt";
-import { PrismaClient } from "@prisma/client";
-import { JwtPayload } from "jsonwebtoken";
+} from '../middleware/jwt';
+import { PrismaClient } from '@prisma/client';
+import { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
-
 
 const prisma = new PrismaClient();
 
@@ -21,13 +20,12 @@ export const googleCallback = async (req: Request, res: Response) => {
       const googleId = googleUser.id;
       const name = googleUser.name;
       const email = googleUser.email;
-  
 
       // Check for missing fields
       if (!googleId || !email || !name) {
         return res
           .status(400)
-          .json({ message: "Google authentication data is incomplete" });
+          .json({ message: 'Google authentication data is incomplete' });
       }
 
       // Check if the user exists in the database
@@ -44,7 +42,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             email,
           },
         });
-        console.log("User registered:", dbUser);
+        console.log('User registered:', dbUser);
       }
 
       // Generate access and refresh tokens for the authenticated user
@@ -71,15 +69,16 @@ export const googleCallback = async (req: Request, res: Response) => {
       if (googleRedirectAddress) {
         res.redirect(googleRedirectAddress);
       } else {
-        return res.status(500).json({ message: 'Google redirect address is not configured' });
+        return res
+          .status(500)
+          .json({ message: 'Google redirect address is not configured' });
       }
-
     } catch (error) {
-      console.error("Error during authentication:", error);
-      return res.status(500).json({ message: "Internal server error" });
+      console.error('Error during authentication:', error);
+      return res.status(500).json({ message: 'Internal server error' });
     }
   } else {
-    return res.status(401).json({ error: "Authentication failed" });
+    return res.status(401).json({ error: 'Authentication failed' });
   }
 };
 
@@ -97,14 +96,14 @@ export const logout = (req: Request, res: Response) => {
     sameSite: 'none',
   });
 
-  res.json({ message: "Logged out successfully" });
+  res.json({ message: 'Logged out successfully' });
 };
 
 export const refreshAccessToken = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refresh_token;
-  
+
   if (!refreshToken) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   try {
@@ -112,17 +111,25 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
 
     // Check if the decoded token is of type JwtPayload
     if (typeof decoded === 'string') {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({ error: 'Invalid token' });
     }
 
+    // Type assertion
     const userId = (decoded as JwtPayload).id; // Type assertion
+
     if (!userId) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({ error: 'Invalid token' });
     }
+
+    // Retrieve the user's email from the database using the userId
+    const user = await prisma.user.findUnique({
+      where: { id: Number(userId) },
+      select: { id: true, email: true },
+    });
 
     const accessToken = generateAccessToken(userId);
-    res.json({ accessToken });
+    res.json({ accessToken, user });
   } catch (error) {
-    res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ error: 'Unauthorized' });
   }
-}
+};
