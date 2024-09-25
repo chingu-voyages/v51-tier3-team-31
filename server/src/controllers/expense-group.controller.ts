@@ -43,7 +43,7 @@ const getExpenseGroups = async (req: Request, res: Response) => {
     const filterUserId = req.query["user-id"];
 
     const expenseGroups = await prisma.expenseGroup.findMany({
-      include: { userExpenseGroups: true },
+      include: { userExpenseGroups: true, expenses: true },
       where: filterUserId // if this query param is not in URL, all records will be returned
         ? {
             userExpenseGroups: {
