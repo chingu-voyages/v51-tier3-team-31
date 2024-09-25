@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import AddBtn from '../components/AddBtn';
 import { useAuth } from '../hooks/useAuth';
+import NewExpenseGroupFormModal from '../components/NewExpenseGroupsFormModal';
 
 interface ExpenseGroup {
   id: number;
@@ -46,6 +47,7 @@ const Home = () => {
             </div>
           ))}
       </div>
+      <NewExpenseGroupFormModal />
       <AddBtn />
     </div>
   );
