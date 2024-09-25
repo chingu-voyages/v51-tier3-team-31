@@ -12,12 +12,17 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // Define the type for the context value
+
 interface AuthContextType {
   isLoggedIn: boolean;
   login: () => void;
   logout: () => void;
   accessToken: string | null;
   authError: string | null;
+  user: {
+    id: string | null;
+    email: string | null;
+  } | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,6 +31,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [user, setUser] = useState<{
+    id: string | null;
+    email: string | null;
+  } | null>(null);
   const navigate = useNavigate();
 
   // call this function when you want to authenticate the user
@@ -65,7 +74,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (response.status === 200) {
         setIsLoggedIn(true);
         const accessToken = response.data.accessToken;
+        const user = response.data.user;
         setAccessToken(accessToken);
+        setUser(user);
       }
     } catch (error: unknown) {
       console.log('You are not logged in');
@@ -86,7 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkSession(); // Check if there's a valid session on load
   }, [checkSession]);
 
-  const value = { isLoggedIn, login, logout, accessToken, authError };
+  const value = { isLoggedIn, login, logout, accessToken, authError, user };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
