@@ -54,6 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       // Clear local state
       setIsLoggedIn(false);
       setAccessToken(null);
+      setUser(null);
 
       // Redirect to the login page
       navigate('/');
