@@ -5,10 +5,12 @@ import AddBtn from '../components/AddBtn';
 import { useAuth } from '../hooks/useAuth';
 import NewExpenseGroupFormModal from '../components/NewExpenseGroupsFormModal';
 import { serverBaseUrl } from '../config';
+import ExpenseGroupCard from '../components/ExpenseGroupCard';
 
 interface ExpenseGroup {
   id: number;
   name: string;
+  userExpenseGroups: [];
 }
 
 const Home = () => {
@@ -32,6 +34,8 @@ const Home = () => {
     }
   }
 
+  console.log(expenseGroups);
+
   useEffect(() => {
     if (user?.id) {
       getExpenseGroups();
@@ -41,21 +45,11 @@ const Home = () => {
   console.log(expenseGroups);
 
   return (
-    <div className="flex min-h-screen items-center flex-col bg-indigo-600">
-      <p className="text-red-600 text-xl mt-3 mb-2">{user?.email}</p>
-      <p className="text-red-600 text-xl">id: {user?.id}</p>
+    <div className="flex min-h-screen items-center flex-col">
       <div className="flex flex-col gap-3 w-full justify-center items-center p-3">
         {expenseGroups.length > 0 &&
-          expenseGroups.map((expG) => (
-            // make a component for this data container
-            <div
-              key={expG.id}
-              className="h-[50px] w-[290px] shadow-md cursor-pointer text-gray-50 bg-gray-300/50 rounded-md flex justify-center items-center"
-            >
-              <p className="px-3.5 py-6 text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
-                {expG.name}
-              </p>
-            </div>
+          expenseGroups.map((expenseGroup) => (
+            <ExpenseGroupCard expenseGroup={expenseGroup} />
           ))}
       </div>
       {isAddExpenseGroupModalOpen && (
