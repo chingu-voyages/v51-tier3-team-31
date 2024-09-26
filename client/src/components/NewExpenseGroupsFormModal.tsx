@@ -5,10 +5,12 @@ import { serverBaseUrl } from '../config';
 
 interface NewExpenseGroupFormModalProps {
   getExpenseGroups: () => void;
+  toggleModal: () => void;
 }
 
 export default function NewExpenseGroupFormModal({
   getExpenseGroups,
+  toggleModal,
 }: NewExpenseGroupFormModalProps) {
   const url = `${serverBaseUrl}/api/v1/expense-groups`;
 
@@ -49,6 +51,7 @@ export default function NewExpenseGroupFormModal({
         });
 
         getExpenseGroups();
+        toggleModal();
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -66,8 +69,14 @@ export default function NewExpenseGroupFormModal({
   }, [user?.id]);
 
   return (
-    <div className="fixed bottom-20">
-      <div className="bg-gray-300 h-[200px] w-[290px] border border-indigo-900 shadow-md shadow-gray-600 relative cursor-pointer">
+    <div
+      className="bg-black/80 flex justify-center items-center min-h-screen fixed bottom-0 left-0 w-full"
+      onClick={toggleModal}
+    >
+      <div
+        className="bg-gray-300 h-[200px] w-[290px] border border-indigo-900 shadow-md shadow-gray-600 relative cursor-pointer"
+        onClick={(e) => e.stopPropagation()}
+      >
         <form
           onSubmit={handleSubmit}
           className="p-3 flex flex-col"
