@@ -18,7 +18,7 @@ const createExpenseGroup = async (req: Request, res: Response) => {
     const newParticipant = await prisma.userExpenseGroup.create({
       data: {
         userId: createdBy,
-        expenseGroupId : newExpenseGroup.id,
+        expenseGroupId: newExpenseGroup.id,
         contributionWeight: 0,
         description: "This Expense Group was created by this User.",
         locked: false,
@@ -38,7 +38,14 @@ const getExpenseGroupById = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     const expenseGroup = await prisma.expenseGroup.findUnique({
-      include: { userExpenseGroups: true, expenses: true },
+      include: {
+        userExpenseGroups: {
+          include: {
+            user: true,
+          },
+        },
+        expenses: true,
+      },
       where: { id },
     });
 
@@ -59,7 +66,14 @@ const getExpenseGroups = async (req: Request, res: Response) => {
     const filterUserId = req.query["user-id"];
 
     const expenseGroups = await prisma.expenseGroup.findMany({
-      include: { userExpenseGroups: true, expenses: true },
+      include: {
+        userExpenseGroups: {
+          include: {
+            user: true,
+          },
+        },
+        expenses: true,
+      },
       where: filterUserId // if this query param is not in URL, all records will be returned
         ? {
             userExpenseGroups: {
