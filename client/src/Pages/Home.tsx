@@ -15,6 +15,8 @@ const Home = () => {
   const { user } = useAuth();
 
   const [expenseGroups, setExpenseGroups] = useState<ExpenseGroup[]>([]);
+  const [isAddExpenseGroupModalOpen, setIsAddExpenseGroupModalOpen] =
+    useState(false);
 
   function getExpenseGroups() {
     if (user?.id) {
@@ -50,14 +52,29 @@ const Home = () => {
               key={expG.id}
               className="h-[50px] w-[290px] shadow-md cursor-pointer text-gray-50 bg-gray-300/50 rounded-md flex justify-center items-center"
             >
-              <p className="px-3.5 py-6 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
+              <p className="px-3.5 py-6 text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
                 {expG.name}
               </p>
             </div>
           ))}
       </div>
-      <NewExpenseGroupFormModal getExpenseGroups={getExpenseGroups}/>
-      <AddBtn />
+      {isAddExpenseGroupModalOpen && (
+        <NewExpenseGroupFormModal
+          getExpenseGroups={getExpenseGroups}
+          toggleModal={() =>
+            setIsAddExpenseGroupModalOpen(!isAddExpenseGroupModalOpen)
+          }
+        />
+      )}
+      <div>
+        {!isAddExpenseGroupModalOpen && (
+          <AddBtn
+            toggleModal={() =>
+              setIsAddExpenseGroupModalOpen(!isAddExpenseGroupModalOpen)
+            }
+          />
+        )}
+      </div>
     </div>
   );
 };
