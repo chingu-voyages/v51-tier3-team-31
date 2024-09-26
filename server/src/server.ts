@@ -11,6 +11,7 @@ import CategoryRouter from "./routes/category.route";
 import UserRouter from "./routes/user.route";
 import ExpenseRouter from "./routes/expense.route";
 import UserExpenseGroupRouter from "./routes/user-expense-group.route";
+import authorizationRoutes from "./routes/authorizationRoutes";
 import corsOptions from "./config/corsConfig";
 
 import { openAPI_Definition } from "./schemas/openApiDefinition";
@@ -43,7 +44,7 @@ async function main() {
   app.use("/api/v1/users", UserRouter);  
 
   app.use("/api/v1/auth", authenticationRoutes)
-
+  app.use("/api/v1/author", authorizationRoutes)  // TODO: Remove it later (only for first testing purpose)
   // // Catch unregistered routes
   // app.all("*", (req: Request, res: Response) => {
   //   res.status(404).json({ error: `Route ${req.originalUrl} not found` });
