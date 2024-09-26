@@ -40,13 +40,12 @@ export default function NewExpenseGroupFormModal({
       .then((res) => {
         console.log('Success!', res);
 
-        // clear input fields
-        setFormData({
+        setFormData((prevFormData) => ({
           name: '',
           description: '',
           budget: 0,
-          createdBy: 0,
-        });
+          createdBy: prevFormData.createdBy,
+        }));
 
         getExpenseGroups();
       })
