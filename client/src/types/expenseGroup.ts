@@ -1,6 +1,7 @@
 // src/types/expenseGroup.ts
 
 import { User } from './user.ts';
+import { Expense } from './expense.ts';
 
 export interface UserExpenseGroup {
   id: number;
@@ -24,5 +25,5 @@ export interface ExpenseGroup {
   createdAt: string;
   updatedAt: string;
   userExpenseGroups: UserExpenseGroup[];
-  expenses: any[]; // Adjust this based on the structure of expenses
+  expenses: Expense[];
 }

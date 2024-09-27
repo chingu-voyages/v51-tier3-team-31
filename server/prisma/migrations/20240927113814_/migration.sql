@@ -16,6 +16,7 @@ CREATE TABLE "expense_groups" (
     "name" TEXT NOT NULL,
     "description" TEXT,
     "budget" DECIMAL(10,2) NOT NULL DEFAULT 0,
+    "created_by" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -73,7 +74,10 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "user_expensegroup_userId_expense_group_id_key" ON "user_expensegroup"("userId", "expense_group_id");
 
 -- AddForeignKey
-ALTER TABLE "user_expensegroup" ADD CONSTRAINT "user_expensegroup_expense_group_id_fkey" FOREIGN KEY ("expense_group_id") REFERENCES "expense_groups"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "expense_groups" ADD CONSTRAINT "expense_groups_created_by_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "user_expensegroup" ADD CONSTRAINT "user_expensegroup_expense_group_id_fkey" FOREIGN KEY ("expense_group_id") REFERENCES "expense_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_expensegroup" ADD CONSTRAINT "user_expensegroup_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -82,4 +86,4 @@ ALTER TABLE "user_expensegroup" ADD CONSTRAINT "user_expensegroup_userId_fkey" F
 ALTER TABLE "expenses" ADD CONSTRAINT "expenses_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "expenses" ADD CONSTRAINT "expenses_expense_group_id_fkey" FOREIGN KEY ("expense_group_id") REFERENCES "expense_groups"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "expenses" ADD CONSTRAINT "expenses_expense_group_id_fkey" FOREIGN KEY ("expense_group_id") REFERENCES "expense_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
