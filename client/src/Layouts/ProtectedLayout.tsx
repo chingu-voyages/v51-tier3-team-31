@@ -2,6 +2,7 @@
 
 import { Link, Outlet } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { Toaster } from '@/components/ui/toaster';
 
 export const ProtectedLayout = () => {
   const { logout } = useAuth();
@@ -19,6 +20,7 @@ export const ProtectedLayout = () => {
         </div>
       </nav>
       <Outlet />
+      <Toaster />
     </div>
   );
 };
