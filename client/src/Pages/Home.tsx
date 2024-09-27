@@ -6,12 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import NewExpenseGroupFormModal from '../components/NewExpenseGroupsFormModal';
 import { serverBaseUrl } from '../config';
 import ExpenseGroupCard from '../components/ExpenseGroupCard';
-
-interface ExpenseGroup {
-  id: number;
-  name: string;
-  userExpenseGroups: [];
-}
+import { ExpenseGroup } from '../types/expenseGroup';
 
 const Home = () => {
   const { user } = useAuth();
@@ -49,7 +44,10 @@ const Home = () => {
       <div className="flex flex-col gap-3 w-full justify-center items-center p-3">
         {expenseGroups.length > 0 &&
           expenseGroups.map((expenseGroup) => (
-            <ExpenseGroupCard expenseGroup={expenseGroup} />
+            <ExpenseGroupCard
+              key={expenseGroup.id}
+              expenseGroup={expenseGroup}
+            />
           ))}
       </div>
       {isAddExpenseGroupModalOpen && (
