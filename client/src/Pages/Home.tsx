@@ -61,6 +61,7 @@ const Home = () => {
       <div>
         {!isAddExpenseGroupModalOpen && (
           <AddBtn
+            text="Add an expense group"
             toggleModal={() =>
               setIsAddExpenseGroupModalOpen(!isAddExpenseGroupModalOpen)
             }
