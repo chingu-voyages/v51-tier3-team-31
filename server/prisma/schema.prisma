@@ -82,7 +82,7 @@ model UserExpenseGroup {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id])
+  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id], onDelete: Cascade)
   user         User         @relation(fields: [userId], references: [id])
 
   // Constraints
@@ -122,7 +122,7 @@ model Expense {
 
   // Relations
   category     Category     @relation(fields: [categoryId], references: [id])
-  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id])
+  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id], onDelete: Cascade)
 
   // Mapping table name in DB
   @@map("expenses")
