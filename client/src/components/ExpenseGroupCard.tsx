@@ -1,6 +1,7 @@
 import { ExpenseGroup, UserExpenseGroup } from '../types/expenseGroup';
 import { ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 interface ExpenseGroupCardProps {
   expenseGroup: ExpenseGroup;
@@ -28,9 +29,12 @@ const ExpenseGroupCard = ({ expenseGroup }: ExpenseGroupCardProps) => {
           ))}
         </div>
       </div>
-      <div className="min-w-11 cursor-pointer hover:bg-gray-200 shadow-md  bg-gray-100 rounded-r-md px-2 flex flex-col items-center justify-center">
+      <Link
+        to={`/expense-groups/${expenseGroup.id}`}
+        className="min-w-11 cursor-pointer hover:bg-gray-200 shadow-md  bg-gray-100 rounded-r-md px-2 flex flex-col items-center justify-center"
+      >
         <ChevronRight />
-      </div>
+      </Link>
     </div>
   );
 };
