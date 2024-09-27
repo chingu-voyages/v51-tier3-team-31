@@ -2,9 +2,10 @@ import { CirclePlus } from 'lucide-react';
 
 interface AddBtnProps {
   toggleModal: () => void;
+  text: string;
 }
 
-export default function AddBtn({ toggleModal }: AddBtnProps) {
+export default function AddBtn({ toggleModal, text }: AddBtnProps) {
   return (
     <div
       onClick={toggleModal}
@@ -14,7 +15,7 @@ export default function AddBtn({ toggleModal }: AddBtnProps) {
         size={42}
         className="cursor-pointer text-neutral-800 hover:text-black"
       />
-      <p className="text-neutral-800">Add an expense group</p>
+      <p className="text-neutral-800">{text}</p>
     </div>
   );
 }
