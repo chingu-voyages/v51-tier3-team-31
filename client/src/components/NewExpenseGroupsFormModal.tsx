@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { X } from 'lucide-react';
 
 interface NewExpenseGroupFormModalProps {
   getExpenseGroups: () => void;
@@ -100,6 +101,12 @@ export default function NewExpenseGroupFormModal({
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8"
           >
+            <div className="absolute right-0 top-0 p-1 rounded-bl-md border-b-[1px] border-l-[1px]">
+              <X
+                className="cursor-pointer opacity-20 "
+                onClick={toggleModal}
+              />
+            </div>
             <h2 className="font-semibold text-center">
               Create a new expense group
             </h2>
