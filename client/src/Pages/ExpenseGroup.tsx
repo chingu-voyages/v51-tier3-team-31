@@ -44,7 +44,11 @@ const ExpenseGroup = () => {
           <TabsTrigger value="photos">Photos</TabsTrigger>
         </TabsList>
         <TabsContent value="expenses">
-          <Expenses expenses={expenseGroup?.expenses} />
+          <Expenses
+            updateData={getExpenseGroup}
+            expenseGroupId={expenseGroup?.id}
+            expenses={expenseGroup?.expenses}
+          />
         </TabsContent>
         <TabsContent value="balances">
           <Balances />
