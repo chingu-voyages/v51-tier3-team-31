@@ -16,7 +16,7 @@ const Navbar = ({ isLoggedIn }: NavbarProps) => {
   const { logout } = useAuth();
 
   return (
-    <nav className="text-primary border-b-[1px] py-2 flex justify-between items-center px-3 backdrop-blur-xl sticky top-0 w-full">
+    <nav className="text-primary border-b-[1px] py-2 z-40 flex justify-between items-center px-3 backdrop-blur-xl sticky top-0 w-full">
       <Link to="/">
         <div className="py-1 px-3 rounded-l-sm border-r-2 font-bold">
           <span className="font-bold text-xl text-blue-600">/</span> Splitit
