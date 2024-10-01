@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { serverBaseUrl } from '@/config';
 
 // Define the type for the context value
 
@@ -40,14 +41,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // call this function when you want to authenticate the user
   const login = () => {
     // Redirect the user to the backend, which will initiate the Google OAuth flow
-    window.location.href = 'http://localhost:8080/api/v1/auth/google';
+    window.location.href = `${serverBaseUrl}/api/v1/auth/google`;
   };
 
   // Call this function to sign out logged in user
   const logout = async () => {
     try {
       // Call the logout API
-      await axios.get('http://localhost:8080/api/v1/auth/logout', {
+      await axios.get(`${serverBaseUrl}/api/v1/auth/logout`, {
         withCredentials: true,
       });
 
@@ -67,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const checkSession = useCallback(async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/v1/auth/refresh-token',
+        `${serverBaseUrl}/api/v1/auth/refresh-token`,
         {},
         { withCredentials: true }
       );
