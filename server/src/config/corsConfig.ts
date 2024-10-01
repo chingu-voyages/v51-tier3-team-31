@@ -9,6 +9,7 @@ const corsOptions: CorsOptions = {
     'http://localhost',
     'http://127.0.0.1:5173',
     'http://127.0.0.1',
+    'https://splitit-j0gt.onrender.com'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
