@@ -40,7 +40,7 @@ model User {
   // Lists from Relations
   userExpenseGroups UserExpenseGroup[] // Where this user is a Participant on 
   expenseGroups     ExpenseGroup[] // Expense Groups created by this user
-  invitations       Invitations[] // Invitations sent by this user
+  invitations       Invitation[] // Invitations sent by this user
 
   // Mapping table name in DB
   @@map("users")
@@ -64,7 +64,7 @@ model ExpenseGroup {
 
   // Relations
   user        User          @relation(fields: [createdBy], references: [id])
-  Invitations Invitations[]
+  Invitations Invitation[]
 
   // Mapping table name in DB
   @@map("expense_groups")
