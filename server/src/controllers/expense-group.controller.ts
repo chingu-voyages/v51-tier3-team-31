@@ -121,6 +121,44 @@ const deleteExpenseGroup = async (req: Request, res: Response) => {
 
 const inviteParticipant = async (req: Request, res: Response) => {
   try {
+    const { id, expenseGroupId, sentBy, invitedEmail } = req.body; // the user email that is being invited
+    // Create the new participant
+    const newInvitation = await prisma.invitation.create({
+      data: {
+        id,
+        expenseGroupId,
+        sentBy,
+        invitedEmail,
+        status: "Pending",
+      },
+    });
+
+    res.status(200).json(newInvitation);
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
+
+const getPendingInvitations = async (req: Request, res: Response) => {
+  try {
+    const filterUserEmail = req.query["user-email"];
+
+    if (!filterUserEmail) {
+      res.status(404).json({ error: "user-email not received on URL" });
+      return;
+    }
+    const pendingInvitations = await prisma.invitation.findMany({
+      where: { invitedEmail: filterUserEmail.toString() },
+    });
+
+    res.status(200).json(pendingInvitations);
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
+
+const inviteParticipant_OLD = async (req: Request, res: Response) => {
+  try {
     const id = parseInt(req.params.id); // the Expense Group Id
     const { expenseGroupId, userEmail } = req.body; // the user email that is being invited
 
@@ -172,4 +210,5 @@ export default {
   updateExpenseGroup,
   deleteExpenseGroup,
   inviteParticipant,
+  getPendingInvitations,
 };
