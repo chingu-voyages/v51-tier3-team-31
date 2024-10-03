@@ -89,7 +89,7 @@ export default function NewExpenseGroupFormModal({
 
   return (
     <div
-      className="bg-black/80 flex justify-center items-center min-h-screen fixed bottom-0 left-0 w-full"
+      className="bg-black/80 z-30 flex justify-center items-center min-h-screen fixed bottom-0 left-0 w-full"
       onClick={toggleModal}
     >
       <div
