@@ -38,8 +38,9 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Lists from Relations
-  UserExpenseGroups UserExpenseGroup[] // Where this user is a Participant on 
-  ExpenseGroups     ExpenseGroup[] // Expense Groups created by this user
+  userExpenseGroups UserExpenseGroup[] // Where this user is a Participant on 
+  expenseGroups     ExpenseGroup[] // Expense Groups created by this user
+  invitations       Invitations[] // Invitations sent by this user
 
   // Mapping table name in DB
   @@map("users")
@@ -62,7 +63,8 @@ model ExpenseGroup {
   userExpenseGroups UserExpenseGroup[]
 
   // Relations
-  user User @relation(fields: [createdBy], references: [id])
+  user        User          @relation(fields: [createdBy], references: [id])
+  Invitations Invitations[]
 
   // Mapping table name in DB
   @@map("expense_groups")
@@ -126,4 +128,25 @@ model Expense {
 
   // Mapping table name in DB
   @@map("expenses")
+}
+
+model Invitation {
+  id             Int    @id @default(autoincrement())
+  expenseGroupId Int    @map("expense_group_id")
+  sentBy         Int    @map("sent_by") // the userId that sent the invitation
+  invitedEmail   String @map("invited_email") // the email that was invited
+  status         String // Invitation Status: "Pending" || "Accepted" || "Rejected"
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  sender       User         @relation(fields: [sentBy], references: [id])
+  expenseGroup ExpenseGroup @relation(fields: [expenseGroupId], references: [id], onDelete: Cascade)
+
+  // Constraints
+  @@unique([expenseGroupId, invitedEmail], name: "ExpenseGroup_Email_Unique") // for an ExpenseGroup, an email can be invited only once
+  // Mapping table name in DB
+  @@map("invitations")
 }
