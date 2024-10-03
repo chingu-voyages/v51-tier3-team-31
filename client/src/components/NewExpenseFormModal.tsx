@@ -108,7 +108,7 @@ export default function NewExpenseFormModal({
 
   return (
     <div
-      className="bg-black/80 flex justify-center items-center min-h-screen absolute top-0 left-0 w-full"
+      className="bg-black/80 z-30 flex justify-center items-center min-h-screen absolute top-0 left-0 w-full"
       onClick={toggleModal}
     >
       <div
