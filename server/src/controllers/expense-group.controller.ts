@@ -122,14 +122,13 @@ const deleteExpenseGroup = async (req: Request, res: Response) => {
 const inviteParticipant = async (req: Request, res: Response) => {
   try {
     const { id, expenseGroupId, sentBy, invitedEmail } = req.body; // the user email that is being invited
-    // Create the new participant
+    // Create the new invitation, status is "Pending" by default
     const newInvitation = await prisma.invitation.create({
       data: {
         id,
         expenseGroupId,
         sentBy,
         invitedEmail,
-        status: "Pending",
       },
     });
 
@@ -148,7 +147,8 @@ const getPendingInvitations = async (req: Request, res: Response) => {
       return;
     }
     const pendingInvitations = await prisma.invitation.findMany({
-      where: { invitedEmail: filterUserEmail.toString() },
+      include: { sender: true, expenseGroup: true },
+      where: { invitedEmail: filterUserEmail.toString(), status: "Pending" },
     });
 
     res.status(200).json(pendingInvitations);
@@ -157,41 +157,63 @@ const getPendingInvitations = async (req: Request, res: Response) => {
   }
 };
 
-const inviteParticipant_OLD = async (req: Request, res: Response) => {
+const replyInvitation = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id); // the Expense Group Id
-    const { expenseGroupId, userEmail } = req.body; // the user email that is being invited
+    const { invitationId, reply } = req.body;
 
-    // Verify if user exists, and get it
-    const invitedUser = await prisma.user.findUnique({
-      where: { email: userEmail },
+    // Verify if invitation exists, and get it
+    const invitation = await prisma.invitation.findUnique({
+      where: { id: invitationId },
     });
 
-    let invitedUserId = 0;
-    if (invitedUser) {
-      // If exists get the Id
-      invitedUserId = invitedUser.id;
-    } else {
-      // if not, create a new one, and get the Id
+    if (!invitation) {
+      res
+        .status(404)
+        .json({ error: "Invitation with this id can not be found." });
+      return;
+    }
+
+    if (reply !== "Accepted" && reply !== "Declined") {
+      res.status(400).json({
+        error: "The reply, on request body, must be 'Accept' or 'Decline'.",
+      });
+      return;
+    }
+
+    // Verify if user exists, and get it
+    let invitedUser = await prisma.user.findUnique({
+      where: { email: invitation.invitedEmail },
+    });
+
+    // If the User do not exist, a new one will be created
+    if (!invitedUser) {
       const newUser = await prisma.user.create({
         data: {
-          name: "",
-          googleId: userEmail,
-          email: userEmail,
+          name: invitation.invitedEmail,
+          googleId: invitation.invitedEmail,
+          email: invitation.invitedEmail,
         },
       });
-      invitedUserId = newUser.id;
+      invitedUser = newUser;
     }
+
+    // update Invitation - "Accepted" or "Declined"
+    const updatedInvitation = await prisma.invitation.update({
+      where: { id: invitationId },
+      data: {
+        status: reply,
+      },
+    });
 
     // Create the new participant
     const newParticipant = await prisma.userExpenseGroup.create({
       data: {
-        userId: invitedUserId,
-        expenseGroupId,
+        userId: invitedUser.id,
+        expenseGroupId: Number(updatedInvitation.expenseGroupId),
         contributionWeight: 0,
         description: "",
         locked: false,
-        lockedAt: "2024-09-10T17:43:02.424Z",
+        lockedAt: "2020-01-01T00:00:00.0Z",
       },
     });
 
@@ -211,4 +233,5 @@ export default {
   deleteExpenseGroup,
   inviteParticipant,
   getPendingInvitations,
+  replyInvitation,
 };

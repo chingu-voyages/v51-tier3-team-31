@@ -135,7 +135,7 @@ model Invitation {
   expenseGroupId Int    @map("expense_group_id")
   sentBy         Int    @map("sent_by") // the userId that sent the invitation
   invitedEmail   String @map("invited_email") // the email that was invited
-  status         String // Invitation Status: "Pending" || "Accepted" || "Rejected"
+  status         String @default("Pending")// Invitation Status: "Pending" || "Accepted" || "Declined"
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
