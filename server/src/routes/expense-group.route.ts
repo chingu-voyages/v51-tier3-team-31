@@ -3,8 +3,11 @@ import ExpenseGroupController from "../controllers/expense-group.controller";
 
 const router = express.Router();
 
-router.get("/pending-invitations", ExpenseGroupController.getPendingInvitations);
-
+router.get(
+  "/pending-invitations",
+  ExpenseGroupController.getPendingInvitations
+);
+router.post("/reply-invitation", ExpenseGroupController.replyInvitation);
 router.post("/", ExpenseGroupController.createExpenseGroup);
 router.get("/:id", ExpenseGroupController.getExpenseGroupById);
 router.get("/", ExpenseGroupController.getExpenseGroups);
