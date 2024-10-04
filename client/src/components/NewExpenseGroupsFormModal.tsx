@@ -20,21 +20,19 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { X } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface NewExpenseGroupFormModalProps {
-  getExpenseGroups: () => void;
   toggleModal: () => void;
 }
 
 export default function NewExpenseGroupFormModal({
   toggleModal,
-  getExpenseGroups,
 }: NewExpenseGroupFormModalProps) {
-  const url = `${serverBaseUrl}/api/v1/expense-groups`;
-
   const { user } = useAuth();
   const { toast } = useToast();
 
+  // Form validation schema
   const FormSchema = z.object({
     name: z.string().min(2, {
       message: 'Name must be at least 2 characters.',
@@ -42,9 +40,7 @@ export default function NewExpenseGroupFormModal({
     description: z.string().min(2, {
       message: 'Description must be at least 2 characters.',
     }),
-    budget: z.number({
-      message: 'Description must be at least 2 characters.',
-    }),
+    budget: z.number().min(0, { message: 'Budget must be at least 0' }),
     createdBy: z.number(),
   });
 
@@ -58,29 +54,36 @@ export default function NewExpenseGroupFormModal({
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    axios
-      .post(url, data)
-      .then(() => {
-        toast({
-          title: 'You have succesfully submitted the following values:',
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(data, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
-        getExpenseGroups(); // Refresh expense groups after creation
-        toggleModal(); // Close the modal
-      })
-      .catch((error) => {
-        console.error('Failed to create expense group:', error);
-      });
-  }
+  const queryClient = useQueryClient();
 
-  // Update formData on mount to set createdBy to user.id
+  // Submit handler for the form
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    try {
+      const url = `${serverBaseUrl}/api/v1/expense-groups?user-id=${user?.id}`;
+      await axios.post(url, data);
+      toast({
+        title: 'Success',
+        description: 'Expense group created successfully!',
+      });
+      toggleModal();
+    } catch (error) {
+      console.error('Error creating expense group:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to create the expense group. Try again later.',
+      });
+    }
+  };
+
+  // React Query mutation
+  const mutation = useMutation({
+    mutationFn: (data: z.infer<typeof FormSchema>) => onSubmit(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['expense-groups'] });
+    },
+  });
+
+  // Set createdBy field with user id when available
   useEffect(() => {
     if (user && user.id) {
       form.setValue('createdBy', Number(user.id));
@@ -98,12 +101,12 @@ export default function NewExpenseGroupFormModal({
       >
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
             className="space-y-8"
           >
             <div className="absolute right-0 top-0 p-1 rounded-bl-md border-b-[1px] border-l-[1px]">
               <X
-                className="cursor-pointer opacity-20 "
+                className="cursor-pointer opacity-20"
                 onClick={toggleModal}
               />
             </div>
@@ -148,12 +151,11 @@ export default function NewExpenseGroupFormModal({
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="budget"
               render={({ field }) => (
-                <FormItem className="hidden">
+                <FormItem className='hidden' >
                   <FormLabel>Budget</FormLabel>
                   <FormControl>
                     <Input
@@ -169,12 +171,12 @@ export default function NewExpenseGroupFormModal({
                 </FormItem>
               )}
             />
-
             <Button
               className="w-full"
               type="submit"
+              disabled={mutation.isPending}
             >
-              Create
+              {mutation.isPending ? 'Creating...' : 'Create'}
             </Button>
           </form>
         </Form>
