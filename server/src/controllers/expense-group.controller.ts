@@ -180,21 +180,25 @@ const replyInvitation = async (req: Request, res: Response) => {
       return;
     }
 
-    // Verify if user exists, and get it
-    let invitedUser = await prisma.user.findUnique({
-      where: { email: invitation.invitedEmail },
-    });
-
-    // If the User do not exist, a new one will be created
-    if (!invitedUser) {
-      const newUser = await prisma.user.create({
-        data: {
-          name: invitation.invitedEmail,
-          googleId: invitation.invitedEmail,
-          email: invitation.invitedEmail,
-        },
+    // If reply was "Accepted", verify the need to create a new User
+    let invitedUser: any | null = {};
+    if (reply == "Accepted") {
+      // Verify if user exists, and get it
+      invitedUser = await prisma.user.findUnique({
+        where: { email: invitation.invitedEmail },
       });
-      invitedUser = newUser;
+
+      // If the User do not exist, a new one will be created
+      if (!invitedUser) {
+        const newUser = await prisma.user.create({
+          data: {
+            name: invitation.invitedEmail,
+            googleId: invitation.invitedEmail,
+            email: invitation.invitedEmail,
+          },
+        });
+        invitedUser = newUser;
+      }
     }
 
     // update Invitation - "Accepted" or "Declined"
@@ -205,17 +209,20 @@ const replyInvitation = async (req: Request, res: Response) => {
       },
     });
 
-    // Create the new participant
-    const newParticipant = await prisma.userExpenseGroup.create({
-      data: {
-        userId: invitedUser.id,
-        expenseGroupId: Number(updatedInvitation.expenseGroupId),
-        contributionWeight: 0,
-        description: "",
-        locked: false,
-        lockedAt: "2020-01-01T00:00:00.0Z",
-      },
-    });
+    let newParticipant: any | null = {};
+    if (reply == "Accepted") {
+      // Create the new participant, only if the reply was "Accepted"
+      newParticipant = await prisma.userExpenseGroup.create({
+        data: {
+          userId: invitedUser.id,
+          expenseGroupId: Number(updatedInvitation.expenseGroupId),
+          contributionWeight: 0,
+          description: "",
+          locked: false,
+          lockedAt: "2020-01-01T00:00:00.0Z",
+        },
+      });
+    }
 
     // IMPORTANT: TODO: create new User (when needed) and create new Participant - should be on same DB Transaction!!
 
