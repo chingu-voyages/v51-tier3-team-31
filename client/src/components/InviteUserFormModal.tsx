@@ -34,10 +34,6 @@ export default function InviteUserFormModal({
   const { user } = useAuth();
   const { toast } = useToast();
 
-  /*   expenseGroupId,
-  sentBy,
-  invitedEmail, */
-
   const FormSchema = z.object({
     expenseGroupId: z.number(),
     sentBy: z.number(),
@@ -59,7 +55,7 @@ export default function InviteUserFormModal({
     // Convert amount and categoryId to number explicitly
     const formData = {
       ...data,
-      sentBy: Number(data.expenseGroupId),
+      sentBy: Number(data.sentBy),
     };
 
     axios
@@ -78,7 +74,7 @@ export default function InviteUserFormModal({
         closeModal(); // Close the modal
       })
       .catch((error) => {
-        console.error('Failed to add user:', error);
+        console.error('Failed to invite user:', error);
         toast({
           title: 'Failed to add user with the following values:',
           description: (
