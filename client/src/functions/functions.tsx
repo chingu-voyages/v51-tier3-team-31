@@ -2,6 +2,7 @@
 
 import { serverBaseUrl } from '@/config';
 import { ExpenseGroup } from '../types/expenseGroup';
+import { Invitation } from '@/types/invitation';
 
 export async function getExpenseGroups(
   userId: number
@@ -11,3 +12,8 @@ export async function getExpenseGroups(
   return response.json();
 }
 
+export async function getInvitations(email: string): Promise<Invitation[]> {
+  const url = `${serverBaseUrl}/api/v1/expense-groups/pending-invitations?user-email=${email}`;
+  const response = await fetch(url);
+  return response.json();
+}

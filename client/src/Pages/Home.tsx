@@ -5,23 +5,15 @@ import AddBtn from '../components/AddBtn';
 import { useAuth } from '../hooks/useAuth';
 import NewExpenseGroupFormModal from '../components/NewExpenseGroupsFormModal';
 import ExpenseGroupCard from '../components/ExpenseGroupCard';
-import { useQuery } from '@tanstack/react-query';
-import { getExpenseGroups } from '@/functions/functions';
-import { ExpenseGroup } from '@/types/expenseGroup';
+import useExpenseGroups from '@/hooks/useExpenseGroups';
 
 const Home = () => {
+  const { user } = useAuth();
   const [isAddExpenseGroupModalOpen, setIsAddExpenseGroupModalOpen] =
     useState(false);
-
-  const { user } = useAuth();
-
-  const userId = user?.id ?? null;
-
-  const { data: expenseGroups = [] } = useQuery<ExpenseGroup[]>({
-    queryKey: ['expense-groups', userId],
-    queryFn: () => getExpenseGroups(Number(userId!)), // This will now run only if userId is not null
-    enabled: !!userId, // Only enable the query when userId is available
-  });
+  
+  const userId = user?.id ? Number(user.id) : undefined;
+  const { data: expenseGroups = [] } = useExpenseGroups(userId);
 
   return (
     <div className="flex min-h-screen items-center flex-col">

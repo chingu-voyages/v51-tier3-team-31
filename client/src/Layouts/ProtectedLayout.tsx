@@ -22,7 +22,7 @@ export const ProtectedLayout = () => {
 
   return (
     <div>
-      <Navbar isLoggedIn={isLoggedIn} />
+      <Navbar />
       <Outlet />
       <Toaster />
     </div>
