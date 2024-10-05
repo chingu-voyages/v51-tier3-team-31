@@ -22,13 +22,27 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
+import InvitationNotificationCard from './InvitationNotificationCard';
+import { Invitation } from '@/types/invitation';
+import { useEffect, useState } from 'react';
+import useInvitations from '@/hooks/useInvitations';
 
-interface NavbarProps {
-  isLoggedIn: boolean;
-}
+const Navbar = () => {
+  const { logout, isLoggedIn, user } = useAuth();
+  const [numberOfInvitations, setNumberOfInvitations] = useState(0);
 
-const Navbar = ({ isLoggedIn }: NavbarProps) => {
-  const { logout } = useAuth();
+  const email = user?.email ?? null;
+  const { data: invitations = [], isPending, error } = useInvitations(email!);
+
+  useEffect(() => {
+    if (invitations) {
+      setNumberOfInvitations(invitations.length);
+    }
+  }, [invitations]);
+
+  if (isPending) return 'Loading...';
+
+  if (error) return 'An error has occurred: ' + error.message;
 
   return (
     <nav className="text-primary border-b-[1px] py-2 z-20 flex justify-between items-center px-3 backdrop-blur-xl sticky top-0 w-full">
@@ -49,28 +63,27 @@ const Navbar = ({ isLoggedIn }: NavbarProps) => {
                       className="opacity-50 my-2 mx-2"
                     />
 
-                    <Badge className="bg-red-600 text-white hover:bg-red-600 absolute px-[6px] py-[0px] bottom-0 rounded-full left-0">
-                      <span>1</span>
-                    </Badge>
+                    {numberOfInvitations > 0 && (
+                      <Badge className="bg-red-600 text-white hover:bg-red-600 absolute px-[6px] py-[0px] bottom-0 rounded-full left-0">
+                        <span>{numberOfInvitations}</span>
+                      </Badge>
+                    )}
                   </div>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="flex w-56 flex-col bg-white px-2 py-2 ">
-                    <div className="flex flex-col border-b-[1px] py-3 border-gray-200">
-                      <p className="text-base font-normal text-center text-gray-600 border-gray-100 p-3">
-                        <span className="font-medium">HARCODED</span> has
-                        invited you into the expense group{' '}
-                        <span className="font-medium">Travel</span>
-                      </p>
-                      <div className="flex  w-full text-center text-sm">
-                        <div className="w-1/2 border-[1px] py-1 border-r-0  border-gray-100 cursor-pointer hover:bg-blue-600 hover:text-white">
-                          Accept
-                        </div>
-                        <div className="w-1/2 border-[1px] py-1 cursor-pointer border-gray-100 hover:bg-gray-100">
-                          Decline
-                        </div>
+                    {numberOfInvitations === 0 && (
+                      <div className="text-center">
+                        You have no notifications
                       </div>
-                    </div>
+                    )}
+                    {numberOfInvitations > 0 &&
+                      invitations.map((invitation: Invitation) => (
+                        <InvitationNotificationCard
+                          invitation={invitation}
+                          key={invitation.id}
+                        />
+                      ))}
                   </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
