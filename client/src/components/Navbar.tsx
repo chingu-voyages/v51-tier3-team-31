@@ -32,17 +32,13 @@ const Navbar = () => {
   const [numberOfInvitations, setNumberOfInvitations] = useState(0);
 
   const email = user?.email ?? null;
-  const { data: invitations = [], isPending, error } = useInvitations(email!);
+  const { data: invitations = [] } = useInvitations(email!);
 
   useEffect(() => {
     if (invitations) {
       setNumberOfInvitations(invitations.length);
     }
   }, [invitations]);
-
-  if (isPending) return 'Loading...';
-
-  if (error) return 'An error has occurred: ' + error.message;
 
   return (
     <nav className="text-primary border-b-[1px] py-2 z-20 flex justify-between items-center px-3 backdrop-blur-xl sticky top-0 w-full">
