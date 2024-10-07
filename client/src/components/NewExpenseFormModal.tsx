@@ -104,6 +104,10 @@ export default function NewExpenseFormModal({
     if (expenseGroupId) {
       form.setValue('expenseGroupId', Number(expenseGroupId));
     }
+    if (categories[0].id) {
+      const categoryIdNumber = categories[0].id;
+      form.setValue('categoryId', categoryIdNumber.toString());
+    }
   }, [user, form, expenseGroupId]);
 
   return (
