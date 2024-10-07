@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"User #1\",\r\n    \"googleId\": \"user0001@gmail.com\",\r\n    \"email\": \"user0001@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"name\": \"User #1\",\r\n    \"googleId\": \"user001@gmail.com\",\r\n    \"email\": \"user0001@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,12 +126,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/user",
+							"raw": "{{baseUrl}}/users",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user"
+								"users"
 							]
 						}
 					},
@@ -149,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test #001\",\r\n    \"description\": \"Description ExpenseGroup Test #001\",\r\n    \"budget\": 2000,\r\n    \"createdBy\": 1\r\n}",
+							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test ZZZZ\",\r\n    \"description\": \"Description ExpenseGroup Test ZZZZ\",\r\n    \"budget\": 2000,\r\n    \"createdBy\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -213,13 +213,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-groups/1",
+							"raw": "{{baseUrl}}/expense-groups/40",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-groups",
-								"1"
+								"40"
 							]
 						}
 					},
@@ -240,13 +240,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense-groups/1",
+							"raw": "{{baseUrl}}/expense-groups/5",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-groups",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -299,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"expenseGroupId\": 1,\r\n    \"userEmail\": \"newusername@test.com\"\r\n}",
+							"raw": "{\r\n    \"expenseGroupId\": 15,\r\n    \"invitedEmail\": \"username005@test.com\",\r\n    \"sentBy\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -323,15 +323,69 @@
 					"name": "Get Invitations by InvitedEmail",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense-groups/pending-invitations?user-email=username005@test.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense-groups",
+								"pending-invitations"
+							],
+							"query": [
+								{
+									"key": "user-email",
+									"value": "username005@test.com"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Reply to an Invitation",
 					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"invitationId\": 20, \r\n    \"reply\": \"Accepted\" // Must be  \"Accepted\" or \"Declined\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense-groups/reply-invitation",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense-groups",
+								"reply-invitation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balances",
+					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense-groups/40/balances",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense-groups",
+								"40",
+								"balances"
+							]
+						}
 					},
 					"response": []
 				}
@@ -347,7 +401,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 1,\r\n    \"expenseGroupId\": 1,\r\n    \"contributionWeight\": 0,\r\n    \"description\": \"Description Sample\",\r\n    \"locked\": false,\r\n    \"lockedAt\": \"2024-09-10T17:43:02.424Z\"\r\n}",
+							"raw": "{\r\n    \"userId\": 5,\r\n    \"expenseGroupId\": 40,\r\n    \"contributionWeight\": 0,\r\n    \"description\": \"Description Sample\",\r\n    \"locked\": false,\r\n    \"lockedAt\": \"2024-09-10T17:43:02.424Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -355,12 +409,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/user-expense-group",
+							"raw": "{{baseUrl}}/participants",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"user-expense-group"
+								"participants"
 							]
 						}
 					},
@@ -473,12 +527,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/participants",
+							"raw": "{{baseUrl}}/participants?expense-group-id=40",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"participants"
+							],
+							"query": [
+								{
+									"key": "expense-group-id",
+									"value": "40"
+								}
 							]
 						}
 					},
@@ -496,7 +556,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Category #1\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Category #001\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -504,12 +564,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/category",
+							"raw": "{{baseUrl}}/categories",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"category"
+								"categories"
 							]
 						}
 					},
@@ -560,13 +620,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/category/2",
+							"raw": "{{baseUrl}}/categories/7",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"category",
-								"2"
+								"categories",
+								"7"
 							]
 						}
 					},
@@ -628,7 +688,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\r\n      \"expenseGroupId\":1,\r\n      \"name\":\"Expense Name 001\",\r\n      \"description\":\"Expense Dscription 001\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 500,\r\n      \"createdBy\": 1,\r\n      \"receiptURL\": \"htps://test.test/test001\"\r\n}",
+							"raw": "{\r\n      \"expenseGroupId\":40,\r\n      \"name\":\"Expense Name 003\",\r\n      \"description\":\"Expense Dscription 003\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 800,\r\n      \"createdBy\": 5,\r\n      \"receiptURL\": \"htps://test.test/test003\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -654,7 +714,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \r\n        \"expenseGroupId\": 1,\r\n        \"name\": \"Expense Name 002\",\r\n        \"description\": \"Expense Dscription 002\",\r\n        \"categoryId\": 1,\r\n        \"amount\": \"500\",\r\n        \"createdBy\": 1,\r\n        \"receiptURL\": \"htps://test.test/test002\"\r\n      \r\n    }",
+							"raw": "    {\r\n        \r\n       \"expenseGroupId\":40,\r\n      \"name\":\"Expense Name 001\",\r\n      \"description\":\"Expense Dscription 001\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 100,\r\n      \"createdBy\": 1,\r\n      \"receiptURL\": \"htps://test.test/test001\"\r\n      \r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -662,13 +722,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expenses/2",
+							"raw": "{{baseUrl}}/expenses/10",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expenses",
-								"2"
+								"10"
 							]
 						}
 					},
@@ -754,7 +814,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/expenses?expense-group-id=1",
+							"raw": "{{baseUrl}}/expenses?expense-group-id=40",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -764,7 +824,7 @@
 							"query": [
 								{
 									"key": "expense-group-id",
-									"value": "1"
+									"value": "40"
 								}
 							]
 						}
