@@ -34,7 +34,7 @@ const ExpenseGroup = () => {
       });
   };
 
-  const participants = expenseGroup?.userExpenseGroups
+  const participants = expenseGroup?.userExpenseGroups;
 
   return (
     <>
@@ -48,16 +48,16 @@ const ExpenseGroup = () => {
             <InviteUserBtn />
           </div>
         </div>
-          <div className="flex w-full justify-center flex-wrap gap-1 my-5">
-            {participants?.map((participant) => (
-              <div
-                className="px-2 py-1 text-[12px] border-r-[1px] border-black/10 rounded-full shadow-sm"
-                key={participant.id}
-              >
-                {participant.user.email}
-              </div>
-            ))}
-          </div>
+        <div className="flex w-full justify-center flex-wrap gap-1 my-5">
+          {participants?.map((participant) => (
+            <div
+              className="px-2 py-1 text-[12px] border-r-[1px] border-black/10 rounded-full shadow-sm"
+              key={participant.id}
+            >
+              {participant.user.email}
+            </div>
+          ))}
+        </div>
         <Tabs
           defaultValue="expenses"
           className="w-full max-w-2xl"
@@ -75,7 +75,7 @@ const ExpenseGroup = () => {
             />
           </TabsContent>
           <TabsContent value="balances">
-            <Balances />
+            <Balances expenseGroupId={expenseGroup?.id} />
           </TabsContent>
           <TabsContent value="photos">
             <Photos />
