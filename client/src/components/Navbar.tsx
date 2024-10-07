@@ -114,7 +114,7 @@ const Navbar = () => {
                   <Link to="/login">Login</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/register">Register</Link>
+                  <Link to="/login">Register</Link>
                 </DropdownMenuItem>
               </>
             )}
