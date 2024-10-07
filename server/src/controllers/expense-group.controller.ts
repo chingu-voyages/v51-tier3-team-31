@@ -305,7 +305,7 @@ const getBalances = async (req: Request, res: Response) => {
             userEmail: participant.user.email,
             amountPaid: totalExpensesByUser[participant.userId],
             balance:
-              totalExpensesByUser[participant.userId] - individualContribution,
+              (totalExpensesByUser[participant.userId] || 0)- individualContribution,
           };
         }
       );
