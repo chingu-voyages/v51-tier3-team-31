@@ -8,6 +8,8 @@ router.get(
   ExpenseGroupController.getPendingInvitations
 );
 router.post("/reply-invitation", ExpenseGroupController.replyInvitation);
+router.get("/:id/balances", ExpenseGroupController.getBalances);
+
 router.post("/", ExpenseGroupController.createExpenseGroup);
 router.get("/:id", ExpenseGroupController.getExpenseGroupById);
 router.get("/", ExpenseGroupController.getExpenseGroups);
@@ -15,5 +17,7 @@ router.put("/:id", ExpenseGroupController.updateExpenseGroup);
 router.delete("/:id", ExpenseGroupController.deleteExpenseGroup);
 
 router.post("/invite-participant", ExpenseGroupController.inviteParticipant);
+
+router.get("/balances", ExpenseGroupController.getBalances);
 
 export default router;

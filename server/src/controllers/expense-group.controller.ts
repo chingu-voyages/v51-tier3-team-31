@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../server";
+import { Decimal } from "@prisma/client/runtime/library";
+import { toASCII } from "punycode";
+import { ExpenseGroup, PrismaClient } from "@prisma/client";
 
 const createExpenseGroup = async (req: Request, res: Response) => {
   try {
@@ -232,6 +235,99 @@ const replyInvitation = async (req: Request, res: Response) => {
   }
 };
 
+const getBalances = async (req: Request, res: Response) => {
+  // The Balance for an User on an Expense Group
+  type Balance = {
+    userId: number;
+    userName: string;
+    userEmail: string;
+    amountPaid: number;
+    balance: number;
+  };
+
+  type Balances = {
+    userId: number;
+    balance: Balance;
+  };
+
+  try {
+    const id = parseInt(req.params.id);
+
+    const expenseGroup = await prisma.expenseGroup.findUnique({
+      include: {
+        userExpenseGroups: {
+          include: {
+            user: true,
+          },
+        },
+        expenses: true,
+      },
+      where: { id },
+    });
+
+    if (expenseGroup) {
+      // Compute Balances - 4 Steps
+
+      // Step 1/4 - Sum all expenses
+      const totalExpenses: number = expenseGroup.expenses.reduce(
+        (totalExpenses, current) => totalExpenses + current.amount.toNumber(),
+        0
+      );
+
+      // Step 2/4 - Compute individual contribution (Equally Divided)
+      const numOfParticipants: number = expenseGroup.userExpenseGroups.length;
+      const individualContribution: number =
+        Math.round((totalExpenses / numOfParticipants + Number.EPSILON) * 100) /
+        100;
+
+      Math.round((totalExpenses / numOfParticipants + Number.EPSILON) * 100) /
+        100; // Round with 2 decimal places
+
+      // Step 3/4 - Computed individual amount paid
+
+      // IMPORTANT - ToDo: totals of expense amount should be grouped by participantId (to be created) and not by createdBy
+
+      const totalExpensesByUser = expenseGroup.expenses.reduce<{
+        [key: number]: number;
+      }>((balances, expense) => {
+        balances[expense.createdBy] =
+          (balances[expense.createdBy] || 0) + expense.amount.toNumber(); // Accumulate the total
+        return balances; // Return the accumulator for the next iteration
+      }, {});
+
+      // Step 4/4 - Compute individual Balance
+
+      const balances: Balance[] = expenseGroup.userExpenseGroups.map(
+        (participant) => {
+          return <Balance>{
+            userId: participant.userId,
+            userName: participant.user.name,
+            userEmail: participant.user.email,
+            amountPaid: totalExpensesByUser[participant.userId],
+            balance:
+              totalExpensesByUser[participant.userId] - individualContribution,
+          };
+        }
+      );
+
+      res.status(200).json({
+        expenseGroupId: id,
+        totalExpenses: totalExpenses,
+        numOfParticipants: numOfParticipants,
+        individualContribution: individualContribution,
+        totalExpensesByUser: totalExpensesByUser,
+        balances: balances,
+      });
+    } else {
+      res
+        .status(404)
+        .json({ error: "Expense Group with this id can not be found." });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
+
 export default {
   createExpenseGroup,
   getExpenseGroupById,
@@ -241,4 +337,5 @@ export default {
   inviteParticipant,
   getPendingInvitations,
   replyInvitation,
+  getBalances,
 };
