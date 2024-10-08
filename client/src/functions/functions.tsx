@@ -4,6 +4,7 @@ import { serverBaseUrl } from '@/config';
 import { ExpenseGroup } from '../types/expenseGroup';
 import { Invitation } from '@/types/invitation';
 import { Balances } from '@/types/balance';
+import { Category } from '@/types/category';
 
 export async function getExpenseGroups(
   userId: number
@@ -21,6 +22,18 @@ export async function getInvitations(email: string): Promise<Invitation[]> {
 
 export async function getBalances(expenseGroupId: string): Promise<Balances> {
   const url = `${serverBaseUrl}/api/v1/expense-groups/${expenseGroupId}/balances`;
+  const response = await fetch(url);
+  return response.json();
+}
+
+export async function getExpenseGroup(id: string): Promise<ExpenseGroup> {
+  const url = `${serverBaseUrl}/api/v1/expense-groups/${id}`;
+  const response = await fetch(url);
+  return response.json();
+}
+
+export async function getCategories(): Promise<Category[]> {
+  const url = `${serverBaseUrl}/api/v1/categories`;
   const response = await fetch(url);
   return response.json();
 }

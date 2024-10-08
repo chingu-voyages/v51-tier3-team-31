@@ -13,23 +13,22 @@ const ExpenseGroupCard = ({ expenseGroup }: ExpenseGroupCardProps) => {
 
   return (
     <div className="flex items-stretch h-full">
-  <div
-    className="py-3 text-left px-3 flex gap-1 w-[290px] shadow-md cursor-pointer text-neutral-800 rounded-l-md justify-center items-center"
-  >
-    <p className="text-lg w-full font-semibold">{expenseGroup.name}</p>
-    <div className="relative">
-      <Badge className="rounded-full absolute right-0 top-0 bg-white/30 px-2 text-primary z-10">{participants.length}</Badge>
-      <UsersRound className="my-3 mx-3 z-1 relative" />
+      <div className="py-3 text-left px-3 flex gap-1 w-[290px] shadow-md cursor-pointer text-neutral-800 rounded-l-md justify-center items-center">
+        <p className="text-lg w-full font-semibold">{expenseGroup.name}</p>
+        <div className="relative">
+          <Badge className="rounded-full absolute right-0 top-0 bg-white/30 px-2 text-primary z-10">
+            {participants.length}
+          </Badge>
+          <UsersRound className="my-3 mx-3 z-1 relative" />
+        </div>
+      </div>
+      <Link
+        to={`/expense-groups/${expenseGroup.id}`}
+        className="min-w-11 cursor-pointer hover:bg-gray-200 shadow-md bg-gray-100 rounded-r-md px-2 flex flex-col items-center justify-center"
+      >
+        <ChevronRight />
+      </Link>
     </div>
-  </div>
-  <Link
-    to={`/expense-groups/${expenseGroup.id}`}
-    className="min-w-11 cursor-pointer hover:bg-gray-200 shadow-md bg-gray-100 rounded-r-md px-2 flex flex-col items-center justify-center"
-  >
-    <ChevronRight />
-  </Link>
-</div>
-
   );
 };
 

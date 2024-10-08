@@ -25,7 +25,6 @@ const InvitationNotificationCard = ({
     const url = `${serverBaseUrl}/api/v1/expense-groups/reply-invitation`;
 
     const response = await axios.post(url, { invitationId, reply });
-    console.log('Success replying to Invitation', response.data);
     return response.data;
   }
 
