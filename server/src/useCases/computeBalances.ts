@@ -19,12 +19,7 @@ type Balance = {
   balance: number;
 };
 
-type Balances = {
-  userId: number;
-  balance: Balance;
-};
-
-export const computeExpenses = async (expenseGroup: ExpenseGroupWithReferences) => {
+export const computeBalances = async (expenseGroup: ExpenseGroupWithReferences) => {
   try {
     // Compute Balances - 4 Steps
 

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../server";
-import { computeExpenses } from "../useCases/computeBalances";
+import { computeBalances } from "../useCases/computeBalances";
+
+import { computePayments } from "../useCases/computePayments";
 
 const createExpenseGroup = async (req: Request, res: Response) => {
   try {
@@ -250,7 +252,39 @@ const getBalances = async (req: Request, res: Response) => {
     });
 
     if (expenseGroup) {
-      const expenseGroupBalances = await computeExpenses(expenseGroup);
+      const expenseGroupBalances = await computeBalances(expenseGroup);
+
+      res.status(200).json(expenseGroupBalances);
+    } else {
+      res
+        .status(404)
+        .json({ error: "Expense Group with this id can not be found." });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
+
+
+const getPayments = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const expenseGroup = await prisma.expenseGroup.findUnique({
+      include: {
+        userExpenseGroups: {
+          include: {
+            user: true,
+          },
+        },
+        expenses: true,
+      },
+      where: { id },
+    });
+
+    if (expenseGroup) {
+      const expenseGroupBalances = await computePayments(expenseGroup);
+      //const expenseGroupPayments = await computePayments(expenseGroupBalances);
 
       res.status(200).json(expenseGroupBalances);
     } else {
@@ -273,4 +307,5 @@ export default {
   getPendingInvitations,
   replyInvitation,
   getBalances,
+  getPayments,
 };
