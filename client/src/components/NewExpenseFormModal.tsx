@@ -5,7 +5,6 @@ import { serverBaseUrl } from '../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useToast } from '@/hooks/use-toast';
 import { Textarea } from '@/components/ui/textarea';
 import { X } from 'lucide-react';
 
@@ -21,9 +20,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Category } from '@/types/category';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface NewExpenseFormModalProps {
-  getExpenses: () => void;
   toggleModal: () => void;
   expenseGroupId: number | undefined;
   categories: Category[];
@@ -31,14 +30,13 @@ interface NewExpenseFormModalProps {
 
 export default function NewExpenseFormModal({
   toggleModal,
-  getExpenses,
   expenseGroupId,
   categories,
 }: NewExpenseFormModalProps) {
   const url = `${serverBaseUrl}/api/v1/expenses`;
 
   const { user } = useAuth();
-  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const FormSchema = z.object({
     expenseGroupId: z.number(),
@@ -67,34 +65,28 @@ export default function NewExpenseFormModal({
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // Convert amount and categoryId to number explicitly
-    const formData = {
-      ...data,
-      amount: Number(data.amount),
-      categoryId: Number(data.categoryId),
-    };
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    mutation.mutate(data);
+  };
 
-    axios
-      .post(url, formData)
-      .then(() => {
-        toast({
-          title: 'You have successfully submitted the following values:',
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(formData, null, 2)}
-              </code>
-            </pre>
-          ),
-        });
-        getExpenses(); // Refresh expenses after creation
-        toggleModal(); // Close the modal
-      })
-      .catch((error) => {
-        console.error('Failed to create expense:', error);
-      });
-  }
+  const mutation = useMutation({
+    mutationFn: async (data: z.infer<typeof FormSchema>) => {
+      const formData = {
+        ...data,
+        amount: Number(data.amount),
+        categoryId: Number(data.categoryId),
+      };
+
+      return axios.post(url, formData);
+    },
+    onSuccess: () => {
+      toggleModal();
+      queryClient.invalidateQueries({ queryKey: ['expense-group'] });
+    },
+    onError: (error) => {
+      console.error('Failed to create expense:', error);
+    },
+  });
 
   // Update formData on mount to set createdBy to user.id and expenseGroupId to expenseGroupId
   useEffect(() => {
