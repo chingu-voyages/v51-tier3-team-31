@@ -276,12 +276,9 @@ const getBalances = async (req: Request, res: Response) => {
 
       // Step 2/4 - Compute individual contribution (Equally Divided)
       const numOfParticipants: number = expenseGroup.userExpenseGroups.length;
-      const individualContribution: number =
-        Math.round((totalExpenses / numOfParticipants + Number.EPSILON) * 100) /
-        100;
-
-      Math.round((totalExpenses / numOfParticipants + Number.EPSILON) * 100) /
-        100; // Round with 2 decimal places
+      const individualContribution: number = parseFloat(
+        (totalExpenses / numOfParticipants).toFixed(2)
+      );
 
       // Step 3/4 - Computed individual amount paid
 
@@ -303,9 +300,13 @@ const getBalances = async (req: Request, res: Response) => {
             userId: participant.userId,
             userName: participant.user.name,
             userEmail: participant.user.email,
-            amountPaid: totalExpensesByUser[participant.userId],
-            balance:
-              (totalExpensesByUser[participant.userId] || 0)- individualContribution,
+            amountPaid: totalExpensesByUser[participant.userId] || 0,
+            balance: parseFloat(
+              (
+                (totalExpensesByUser[participant.userId] || 0) -
+                individualContribution
+              ).toFixed(2)
+            ),
           };
         }
       );
