@@ -63,7 +63,7 @@ export default function InviteUserFormModal({
       .then(() => {
         toast({
           title: 'Invitation sent succesfully',
-          description: <div>Invitations sent to {formData.invitedEmail}</div>,
+          description: <div>Invitation sent to {formData.invitedEmail}</div>,
         });
         closeModal(); // Close the modal
       })
