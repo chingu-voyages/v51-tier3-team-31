@@ -5,18 +5,16 @@ import Balances from '@/components/Balances';
 import Photos from '@/components/Photos';
 import InviteUserBtn from '@/components/InviteUserBtn';
 import InviteUserFormModal from '@/components/InviteUserFormModal';
-import { useAuth } from '@/hooks/useAuth';
 import useExpenseGroup from '@/hooks/useExpenseGroup';
+import { useParams } from 'react-router-dom';
 
 const ExpenseGroup = () => {
-  const { user } = useAuth();
-
+  const { id } = useParams<{ id: string }>();
   const [isInviteUserModalOpen, setIsInviteUserModalOpen] = useState(false);
 
-  const userId = user?.id ? user.id.toString() : undefined;
-  const { data: expenseGroup } = useExpenseGroup(userId);
+  const { data: expenseGroup } = useExpenseGroup(id);
 
-  const participants = expenseGroup?.userExpenseGroups
+  const participants = expenseGroup?.userExpenseGroups;
 
   return (
     <>
