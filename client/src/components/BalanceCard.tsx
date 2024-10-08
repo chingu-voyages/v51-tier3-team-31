@@ -1,4 +1,6 @@
 import { Balance } from '@/types/balance';
+import { Euro, User, TrendingUp, TrendingDown } from 'lucide-react';
+import { Card, CardContent } from './ui/card';
 
 interface BalanceCardProps {
   balance: Balance | undefined;
@@ -13,32 +15,61 @@ const BalanceCard = ({ email, balance }: BalanceCardProps) => {
 
   const { userEmail, balance: userBalance, amountPaid } = balance;
 
-  // Display balance value or a default message
-  const balanceDisplay =
-    userBalance !== null ? `${userBalance} $` : 'No balance';
+  // Handle the null case explicitly
+  const balanceAmount = userBalance ?? 0; // Use nullish coalescing
+  const balanceDisplay = balanceAmount.toFixed(2);
+  const amountPaidDisplay = amountPaid.toFixed(2);
+  const isPositiveBalance = balanceAmount >= 0;
 
   return (
-    <div className="w-64 shadow-md mx-auto px-3 py-2 text-center rounded-md border-none">
-      <div className="flex w-full flex-col gap-3 justify-between items-start font-semibold px-3">
-        <p>{userEmail}</p>
-        <div className="flex justify-between w-full text-md font-normal">
-          <div>
-            Balance:{' '}
-            <span
-              className={`${
-                userBalance !== null && userBalance > 0
-                  ? 'text-green-600'
-                  : 'text-red-600'
-              }`}
-            >
-              {balanceDisplay}
-            </span>
+    <Card className="w-80 mx-auto hover:shadow-lg transition-all duration-300">
+      <CardContent className="pt-6">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <User className="w-5 h-5 text-gray-600" />
+              <p className="font-medium text-gray-600 truncate max-w-[200px]">
+                {userEmail}
+              </p>
+            </div>
           </div>
 
-          <p>Paid: {amountPaid} $</p>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-2">
+                {isPositiveBalance ? (
+                  <TrendingUp className="w-5 h-5 text-green-500" />
+                ) : (
+                  <TrendingDown className="w-5 h-5 text-red-500" />
+                )}
+                <span className="text-sm font-medium text-gray-500">
+                  Current Balance
+                </span>
+              </div>
+              <span
+                className={`text-lg font-bold ${
+                  isPositiveBalance ? 'text-green-600' : 'text-red-600'
+                }`}
+              >
+                {balanceDisplay} €
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-2">
+                <Euro className="w-5 h-5 text-gray-500" />
+                <span className="text-sm font-medium text-gray-500">
+                  Total Paid
+                </span>
+              </div>
+              <span className="text-lg font-bold text-gray-700">
+                {amountPaidDisplay} €
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
