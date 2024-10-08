@@ -9,6 +9,7 @@ router.get(
 );
 router.post("/reply-invitation", ExpenseGroupController.replyInvitation);
 router.get("/:id/balances", ExpenseGroupController.getBalances);
+router.get("/:id/payments", ExpenseGroupController.getPayments);
 
 router.post("/", ExpenseGroupController.createExpenseGroup);
 router.get("/:id", ExpenseGroupController.getExpenseGroupById);

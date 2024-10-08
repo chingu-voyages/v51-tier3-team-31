@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../server";
-import { Decimal } from "@prisma/client/runtime/library";
-import { toASCII } from "punycode";
-import { ExpenseGroup, PrismaClient } from "@prisma/client";
+import { computeBalances } from "../useCases/computeBalances";
+
+import { computePayments } from "../useCases/computePayments";
 
 const createExpenseGroup = async (req: Request, res: Response) => {
   try {
@@ -236,20 +236,6 @@ const replyInvitation = async (req: Request, res: Response) => {
 };
 
 const getBalances = async (req: Request, res: Response) => {
-  // The Balance for an User on an Expense Group
-  type Balance = {
-    userId: number;
-    userName: string;
-    userEmail: string;
-    amountPaid: number;
-    balance: number;
-  };
-
-  type Balances = {
-    userId: number;
-    balance: Balance;
-  };
-
   try {
     const id = parseInt(req.params.id);
 
@@ -266,59 +252,41 @@ const getBalances = async (req: Request, res: Response) => {
     });
 
     if (expenseGroup) {
-      // Compute Balances - 4 Steps
+      const expenseGroupBalances = await computeBalances(expenseGroup);
 
-      // Step 1/4 - Sum all expenses
-      const totalExpenses: number = expenseGroup.expenses.reduce(
-        (totalExpenses, current) => totalExpenses + current.amount.toNumber(),
-        0
-      );
+      res.status(200).json(expenseGroupBalances);
+    } else {
+      res
+        .status(404)
+        .json({ error: "Expense Group with this id can not be found." });
+    }
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+};
 
-      // Step 2/4 - Compute individual contribution (Equally Divided)
-      const numOfParticipants: number = expenseGroup.userExpenseGroups.length;
-      const individualContribution: number = parseFloat(
-        (totalExpenses / numOfParticipants).toFixed(2)
-      );
 
-      // Step 3/4 - Computed individual amount paid
+const getPayments = async (req: Request, res: Response) => {
+  try {
+    const id = parseInt(req.params.id);
 
-      // IMPORTANT - ToDo: totals of expense amount should be grouped by participantId (to be created) and not by createdBy
+    const expenseGroup = await prisma.expenseGroup.findUnique({
+      include: {
+        userExpenseGroups: {
+          include: {
+            user: true,
+          },
+        },
+        expenses: true,
+      },
+      where: { id },
+    });
 
-      const totalExpensesByUser = expenseGroup.expenses.reduce<{
-        [key: number]: number;
-      }>((balances, expense) => {
-        balances[expense.createdBy] =
-          (balances[expense.createdBy] || 0) + expense.amount.toNumber(); // Accumulate the total
-        return balances; // Return the accumulator for the next iteration
-      }, {});
+    if (expenseGroup) {
+      const expenseGroupBalances = await computePayments(expenseGroup);
+      //const expenseGroupPayments = await computePayments(expenseGroupBalances);
 
-      // Step 4/4 - Compute individual Balance
-
-      const balances: Balance[] = expenseGroup.userExpenseGroups.map(
-        (participant) => {
-          return <Balance>{
-            userId: participant.userId,
-            userName: participant.user.name,
-            userEmail: participant.user.email,
-            amountPaid: totalExpensesByUser[participant.userId] || 0,
-            balance: parseFloat(
-              (
-                (totalExpensesByUser[participant.userId] || 0) -
-                individualContribution
-              ).toFixed(2)
-            ),
-          };
-        }
-      );
-
-      res.status(200).json({
-        expenseGroupId: id,
-        totalExpenses: totalExpenses,
-        numOfParticipants: numOfParticipants,
-        individualContribution: individualContribution,
-        totalExpensesByUser: totalExpensesByUser,
-        balances: balances,
-      });
+      res.status(200).json(expenseGroupBalances);
     } else {
       res
         .status(404)
@@ -339,4 +307,5 @@ export default {
   getPendingInvitations,
   replyInvitation,
   getBalances,
+  getPayments,
 };
