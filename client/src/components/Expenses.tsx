@@ -1,12 +1,10 @@
 import { Binoculars } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import AddBtn from './AddBtn';
 import { Expense } from '@/types/expense';
 import NewExpenseFormModal from './NewExpenseFormModal';
-import { Category } from '@/types/category';
-import { serverBaseUrl } from '@/config';
-import axios from 'axios';
 import ExpenseCard from './ExpenseCard';
+import useCategories from '@/hooks/useCategories';
 
 interface ExpensesProps {
   expenses: Expense[] | undefined;
@@ -15,25 +13,9 @@ interface ExpensesProps {
 
 const Expenses = ({ expenses, expenseGroupId }: ExpensesProps) => {
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  const getCategoriesUrl = `${serverBaseUrl}/api/v1/categories`;
-
   const toggleModal = () => setIsAddExpenseModalOpen(!isAddExpenseModalOpen);
 
-  // get categories on mount
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const res = await axios.get(getCategoriesUrl);
-        setCategories(res.data);
-        console.log(res.data);
-      } catch (error) {
-        console.error('Could not get expense categories: ', error);
-      }
-    };
-    getCategories();
-  }, [getCategoriesUrl]);
+  const { data: categories = [] } = useCategories();
 
   if (expenses && expenses.length > 0) {
     return (
