@@ -6,7 +6,9 @@ import Photos from '@/components/Photos';
 import InviteUserBtn from '@/components/InviteUserBtn';
 import InviteUserFormModal from '@/components/InviteUserFormModal';
 import useExpenseGroup from '@/hooks/useExpenseGroup';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { ChevronLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const ExpenseGroup = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,12 +21,14 @@ const ExpenseGroup = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center p-1 md:p-10 max-w-xl mx-auto">
-        <div className="flex w-full justify-center max-w-xl relative mt-3">
+        <div className="flex w-full justify-between max-w-xl relative mt-3">
+          <Link to="/home">
+            <Button className="bg-white text-slate-600 hover:bg-white shadow-none transition-colors duration-300">
+              <ChevronLeft />
+            </Button>
+          </Link>
           <h1 className="text-xl mb-3 font-semibold">{expenseGroup?.name}</h1>
-          <div
-            className="absolute right-2"
-            onClick={() => setIsInviteUserModalOpen(true)}
-          >
+          <div onClick={() => setIsInviteUserModalOpen(true)}>
             <InviteUserBtn />
           </div>
         </div>

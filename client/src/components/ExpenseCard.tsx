@@ -40,7 +40,7 @@ const ExpenseCard = ({ categories, expense }: ExpenseProps) => {
         <AccordionTrigger className="hover:no-underline">
           <div className="flex w-full justify-between font-semibold px-3">
             <p>{getCategoryName(expense.categoryId)}</p>
-            <p>{expense.amount} $</p>
+            <p>{expense.amount} €</p>
           </div>
         </AccordionTrigger>
         <AccordionContent>
