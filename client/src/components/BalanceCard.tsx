@@ -22,7 +22,7 @@ const BalanceCard = ({ email, balance }: BalanceCardProps) => {
   const isPositiveBalance = balanceAmount >= 0;
 
   return (
-    <Card className="w-80 mx-auto hover:shadow-lg transition-all duration-300">
+    <Card className="w-80 mx-auto">
       <CardContent className="pt-6">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
