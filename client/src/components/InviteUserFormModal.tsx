@@ -62,19 +62,12 @@ export default function InviteUserFormModal({
       .post(url, formData)
       .then(() => {
         toast({
-          title: 'You have successfully submitted the following values:',
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">
-                {JSON.stringify(formData, null, 2)}
-              </code>
-            </pre>
-          ),
+          title: 'Invitation sent succesfully',
+          description: <div>Invitations sent to {formData.invitedEmail}</div>,
         });
         closeModal(); // Close the modal
       })
       .catch((error) => {
-        console.error('Failed to invite user:', error);
         toast({
           variant: 'destructive',
           title: 'Failed to invite user',
