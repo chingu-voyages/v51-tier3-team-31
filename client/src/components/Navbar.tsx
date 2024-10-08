@@ -107,6 +107,13 @@ const Navbar = () => {
                   <Link to="/home">Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                <DropdownMenuItem
+                  asChild
+                  className=" text-slate-800 text-xs border-t-[1px] mt-2"
+                  disabled
+                >
+                  <div>{user?.email}</div>
+                </DropdownMenuItem>
               </>
             ) : (
               <>
