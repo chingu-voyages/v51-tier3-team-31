@@ -2,6 +2,8 @@ import useBalances from '@/hooks/useBalances';
 import { Balance } from '@/types/balance';
 import { useEffect, useState } from 'react';
 import BalanceCard from './BalanceCard';
+import { Receipt } from 'lucide-react';
+import { Card, CardContent } from './ui/card';
 
 interface BalancesPropsType {
   expenseGroupId: number | undefined;
@@ -20,10 +22,22 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
   }, [balancesObj]);
 
   return (
-    <>
-      <div className="flex flex-col justify-center items-center">
-        <div className="text-lg">Total expense: {balancesObj?.totalExpenses} $</div>
-      </div>
+    <div>
+      <Card className="max-w-md bg-gradient-to-br  w-80 mx-auto ">
+        <CardContent className="py-3">
+          <div className="flex items-center justify-between space-x-4">
+            <div className="p-3  text-slate-600">
+              <Receipt size={35}  />
+            </div>
+            <div className="text-center">
+              <p className="text-sm text-gray-500 font-medium">Total Expense</p>
+              <p className="text-xl font-bold text-gray-700">
+                ${balancesObj?.totalExpenses?.toFixed(2) ?? '0.00'}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       <div className="flex flex-col gap-3 mt-5">
         {balances.map((balance) => (
           <BalanceCard
@@ -33,7 +47,7 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
