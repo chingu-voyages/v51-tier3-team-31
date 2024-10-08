@@ -61,16 +61,12 @@ export default function NewExpenseGroupFormModal({
     try {
       const url = `${serverBaseUrl}/api/v1/expense-groups?user-id=${user?.id}`;
       await axios.post(url, data);
-      toast({
-        title: 'Success',
-        description: 'Expense group created successfully!',
-      });
       toggleModal();
-    } catch (error) {
-      console.error('Error creating expense group:', error);
+    } catch (error: any) {
       toast({
-        title: 'Error',
-        description: 'Failed to create the expense group. Try again later.',
+        variant: 'destructive',
+        title: "Couldn't create expense group",
+        description: <div>{error.message}</div>,
       });
     }
   };
@@ -155,7 +151,7 @@ export default function NewExpenseGroupFormModal({
               control={form.control}
               name="budget"
               render={({ field }) => (
-                <FormItem className='hidden' >
+                <FormItem className="hidden">
                   <FormLabel>Budget</FormLabel>
                   <FormControl>
                     <Input
