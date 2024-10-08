@@ -11,20 +11,15 @@ import ExpenseCard from './ExpenseCard';
 interface ExpensesProps {
   expenses: Expense[] | undefined;
   expenseGroupId: number | undefined;
-  updateData: () => void;
 }
 
-const Expenses = ({ expenses, expenseGroupId, updateData }: ExpensesProps) => {
+const Expenses = ({ expenses, expenseGroupId }: ExpensesProps) => {
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
 
   const getCategoriesUrl = `${serverBaseUrl}/api/v1/categories`;
 
   const toggleModal = () => setIsAddExpenseModalOpen(!isAddExpenseModalOpen);
-
-  const getExpenses = () => {
-    updateData();
-  };
 
   // get categories on mount
   useEffect(() => {
@@ -63,7 +58,6 @@ const Expenses = ({ expenses, expenseGroupId, updateData }: ExpensesProps) => {
         {isAddExpenseModalOpen && (
           <NewExpenseFormModal
             categories={categories}
-            getExpenses={getExpenses}
             expenseGroupId={expenseGroupId}
             toggleModal={toggleModal}
           />
@@ -94,7 +88,6 @@ const Expenses = ({ expenses, expenseGroupId, updateData }: ExpensesProps) => {
       {isAddExpenseModalOpen && (
         <NewExpenseFormModal
           categories={categories}
-          getExpenses={getExpenses}
           expenseGroupId={expenseGroupId}
           toggleModal={toggleModal}
         />
