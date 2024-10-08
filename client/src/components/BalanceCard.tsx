@@ -22,7 +22,7 @@ const BalanceCard = ({ email, balance }: BalanceCardProps) => {
   const isPositiveBalance = balanceAmount >= 0;
 
   return (
-    <Card className="w-80 mx-auto">
+    <Card className="w-80 mx-auto rounded-md">
       <CardContent className="pt-6">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
@@ -35,7 +35,7 @@ const BalanceCard = ({ email, balance }: BalanceCardProps) => {
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-sm">
               <div className="flex items-center space-x-2">
                 {isPositiveBalance ? (
                   <TrendingUp className="w-5 h-5 text-green-500" />
@@ -47,7 +47,7 @@ const BalanceCard = ({ email, balance }: BalanceCardProps) => {
                 </span>
               </div>
               <span
-                className={`text-lg font-bold ${
+                className={`font-semibold ${
                   isPositiveBalance ? 'text-green-600' : 'text-red-600'
                 }`}
               >
@@ -62,7 +62,7 @@ const BalanceCard = ({ email, balance }: BalanceCardProps) => {
                   Total Paid
                 </span>
               </div>
-              <span className="text-lg font-bold text-gray-700">
+              <span className="font-semibold text-gray-700">
                 {amountPaidDisplay} €
               </span>
             </div>
