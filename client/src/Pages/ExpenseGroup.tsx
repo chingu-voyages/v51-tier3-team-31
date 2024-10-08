@@ -1,40 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { serverBaseUrl } from '@/config';
-import { ExpenseGroup as ExpenseGroupType } from '../types/expenseGroup';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Expenses from '@/components/Expenses';
 import Balances from '@/components/Balances';
 import Photos from '@/components/Photos';
 import InviteUserBtn from '@/components/InviteUserBtn';
 import InviteUserFormModal from '@/components/InviteUserFormModal';
+import { useAuth } from '@/hooks/useAuth';
+import useExpenseGroup from '@/hooks/useExpenseGroup';
 
 const ExpenseGroup = () => {
-  const { id } = useParams<{ id: string }>();
-  const [expenseGroup, setExpenseGroup] = useState<ExpenseGroupType | null>(
-    null
-  );
+  const { user } = useAuth();
+
   const [isInviteUserModalOpen, setIsInviteUserModalOpen] = useState(false);
 
-  useEffect(() => {
-    getExpenseGroup();
-  }, [id]);
+  const userId = user?.id ? user.id.toString() : undefined;
+  const { data: expenseGroup } = useExpenseGroup(userId);
 
-  const getExpenseGroup = () => {
-    const url = `${serverBaseUrl}/api/v1/expense-groups/${id}`;
-    axios
-      .get<ExpenseGroupType>(url)
-      .then((res) => {
-        setExpenseGroup(res.data);
-        console.log(res.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  };
-
-  const participants = expenseGroup?.userExpenseGroups;
+  const participants = expenseGroup?.userExpenseGroups
 
   return (
     <>
@@ -69,7 +51,6 @@ const ExpenseGroup = () => {
           </TabsList>
           <TabsContent value="expenses">
             <Expenses
-              updateData={getExpenseGroup}
               expenseGroupId={expenseGroup?.id}
               expenses={expenseGroup?.expenses}
             />
