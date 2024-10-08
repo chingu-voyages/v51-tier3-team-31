@@ -23,7 +23,7 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
 
   return (
     <div>
-      <Card className="max-w-md bg-gradient-to-br  w-80 mx-auto ">
+      <Card className="max-w-md bg-gradient-to-br  w-80 rounded-md mx-auto ">
         <CardContent className="py-3">
           <div className="flex items-center justify-between space-x-4">
             <div className="p-3  text-slate-600">
@@ -31,8 +31,8 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
             </div>
             <div className="text-center">
               <p className="text-sm text-gray-500 font-medium">Total Expense</p>
-              <p className="text-xl font-bold text-gray-700">
-                ${balancesObj?.totalExpenses?.toFixed(2) ?? '0.00'}
+              <p className="text-xl font-semibold text-gray-700">
+                {balancesObj?.totalExpenses?.toFixed(2) ?? '0.00'} €
               </p>
             </div>
           </div>
