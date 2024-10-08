@@ -76,14 +76,9 @@ export default function InviteUserFormModal({
       .catch((error) => {
         console.error('Failed to invite user:', error);
         toast({
-          title: 'Failed to add user with the following values:',
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-red-600 text-white p-4">
-              <code className="text-white">
-                {JSON.stringify(error, null, 2)}
-              </code>
-            </pre>
-          ),
+          variant: 'destructive',
+          title: 'Failed to invite user',
+          description: <div className="my-3">{error.message}</div>,
         });
       });
   }
