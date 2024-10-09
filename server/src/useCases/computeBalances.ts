@@ -11,15 +11,17 @@ type ExpenseGroupWithReferences = Prisma.ExpenseGroupGetPayload<
 >;
 
 // The Balance for an User on an Expense Group
-type Balance = {
+export type Balance = {
   userId: number;
-  userName: string;
-  userEmail: string;
+  userName?: string;
+  userEmail?: string;
   amountPaid: number;
   balance: number;
 };
 
-export const computeBalances = async (expenseGroup: ExpenseGroupWithReferences) => {
+export const computeBalances = async (
+  expenseGroup: ExpenseGroupWithReferences
+) => {
   try {
     // Compute Balances - 4 Steps
 
@@ -75,6 +77,6 @@ export const computeBalances = async (expenseGroup: ExpenseGroupWithReferences) 
       balances: balances,
     };
   } catch (e) {
-    throw new Error("Error computing Balances.");
+    throw new Error("Error computing Balances");
   }
 };
