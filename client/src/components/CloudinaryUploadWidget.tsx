@@ -1,16 +1,43 @@
 import { ImageUploadEvent } from '@/types/cloudinary';
 import { createContext, useEffect, useState } from 'react';
 
+interface CloudinaryContextType {
+  loaded: boolean;
+}
+
+interface CloudinaryUploadWidgetProps {
+  uwConfig: object;
+  setPublicId: (publicId: string) => void;
+  setImageUrl: (url: string) => void;
+  setResponse: (response: null | 'success') => void;
+}
+
+// Declare the Cloudinary window interface
+declare global {
+  interface Window {
+    cloudinary: {
+      createUploadWidget: (
+        config: object,
+        callback: (error: any, result: ImageUploadEvent) => void
+      ) => {
+        open: () => void;
+      };
+    };
+  }
+}
+
 // Create a context to manage the script loading state
-const CloudinaryScriptContext = createContext();
+const CloudinaryScriptContext = createContext<CloudinaryContextType>({
+  loaded: false,
+});
 
 function CloudinaryUploadWidget({
   uwConfig,
   setPublicId,
   setImageUrl,
   setResponse,
-}) {
-  const [loaded, setLoaded] = useState(false);
+}: CloudinaryUploadWidgetProps) {
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     // Check if the script is already loaded
@@ -33,19 +60,20 @@ function CloudinaryUploadWidget({
 
   const initializeCloudinaryWidget = () => {
     if (loaded) {
-      var myWidget = window.cloudinary.createUploadWidget(
+      const myWidget = window.cloudinary.createUploadWidget(
         uwConfig,
         (error: any, result: ImageUploadEvent) => {
           if (!error && result && result.event === 'success') {
             console.log('Done! Here is the image info: ', result);
-            setImageUrl(result.info.secure_url); // Assuming setImageUrl takes the image URL
+            setImageUrl(result.info.secure_url);
             setPublicId(result.info.public_id);
             setResponse(result.event);
           }
         }
       );
 
-      document.getElementById('upload_widget')?.addEventListener(
+      const uploadButton = document.getElementById('upload_widget');
+      uploadButton?.addEventListener(
         'click',
         function () {
           myWidget.open();
@@ -60,7 +88,7 @@ function CloudinaryUploadWidget({
       <button
         type="button"
         id="upload_widget"
-        className=" bg-primary text-white font-medium text-sm py-2 px-3 cursor-pointer rounded-md"
+        className="bg-primary text-white font-medium text-sm py-2 px-3 cursor-pointer rounded-md"
         onClick={initializeCloudinaryWidget}
       >
         Upload receipt
