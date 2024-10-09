@@ -7,7 +7,6 @@ import PaymentCard from './PaymentCard';
 import { ThumbsUp, Receipt } from 'lucide-react';
 import { Balance } from '@/types/balance';
 import { Payment } from '@/types/payment';
-import { User } from '@/types/user';
 import { useAuth } from '@/hooks/useAuth';
 
 interface BalancesPropsType {
@@ -49,9 +48,7 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
       setPaymentsOfCurrentUser(filteredPayments);
     }
   }, [user, payments]);
-
-  console.log({ userId: user?.id, paymentsOfCurrentUser });
-
+  
   return (
     <div>
       <div className="flex flex-col gap-3 w-80 mx-auto mt-5">
