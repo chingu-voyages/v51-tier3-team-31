@@ -63,7 +63,7 @@ model ExpenseGroup {
   userExpenseGroups UserExpenseGroup[]
 
   // Relations
-  user        User          @relation(fields: [createdBy], references: [id])
+  user        User         @relation(fields: [createdBy], references: [id])
   Invitations Invitation[]
 
   // Mapping table name in DB
@@ -109,14 +109,15 @@ model Category {
 }
 
 model Expense {
-  id             Int     @id @default(autoincrement())
-  expenseGroupId Int     @map("expense_group_id")
-  name           String
-  description    String
-  categoryId     Int     @map("category_id")
-  amount         Decimal @default(0) @db.Decimal(10, 2)
-  createdBy      Int
-  receiptURL     String  @map("receipt_url")
+  id                  Int     @id @default(autoincrement())
+  expenseGroupId      Int     @map("expense_group_id")
+  name                String
+  description         String
+  categoryId          Int     @map("category_id")
+  amount              Decimal @default(0) @db.Decimal(10, 2)
+  createdBy           Int
+  receiptURL          String? @map("receipt_url")
+  receiptThumbnailURL String? @map("receipt_thumbnail_url")
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
@@ -135,7 +136,7 @@ model Invitation {
   expenseGroupId Int    @map("expense_group_id")
   sentBy         Int    @map("sent_by") // the userId that sent the invitation
   invitedEmail   String @map("invited_email") // the email that was invited
-  status         String @default("Pending")// Invitation Status: "Pending" || "Accepted" || "Declined"
+  status         String @default("Pending") // Invitation Status: "Pending" || "Accepted" || "Declined"
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")

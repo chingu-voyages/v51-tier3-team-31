@@ -149,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Name ExpenseGroup Test ZZZZ\",\r\n    \"description\": \"Description ExpenseGroup Test ZZZZ\",\r\n    \"budget\": 2000,\r\n    \"createdBy\": 1\r\n}",
+							"raw": "{\r\n    \"name\": \"ExpenseGroup to test Payments\",\r\n    \"description\": \"ExpenseGroup to test API Payments endpoint\",\r\n    \"budget\": 2000,\r\n    \"createdBy\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -299,7 +299,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"expenseGroupId\": 15,\r\n    \"invitedEmail\": \"username005@test.com\",\r\n    \"sentBy\": 1\r\n}",
+							"raw": "{\r\n    \"expenseGroupId\": 60,\r\n    \"invitedEmail\": \"username005@test.com\",\r\n    \"sentBy\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -376,14 +376,33 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/expense-groups/40/balances",
+							"raw": "{{baseUrl}}/expense-groups/46/balances",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expense-groups",
-								"40",
+								"46",
 								"balances"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense-groups/46/payments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense-groups",
+								"46",
+								"payments"
 							]
 						}
 					},
@@ -401,7 +420,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": 5,\r\n    \"expenseGroupId\": 40,\r\n    \"contributionWeight\": 0,\r\n    \"description\": \"Description Sample\",\r\n    \"locked\": false,\r\n    \"lockedAt\": \"2024-09-10T17:43:02.424Z\"\r\n}",
+							"raw": "{\r\n    \"userId\":6,\r\n    \"expenseGroupId\": 46,\r\n    \"contributionWeight\": 0,\r\n    \"description\": \"Description Sample\",\r\n    \"locked\": false,\r\n    \"lockedAt\": \"2024-09-10T17:43:02.424Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -688,7 +707,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n      \"expenseGroupId\":40,\r\n      \"name\":\"Expense Name 003\",\r\n      \"description\":\"Expense Dscription 003\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 800,\r\n      \"createdBy\": 5,\r\n      \"receiptURL\": \"htps://test.test/test003\"\r\n}",
+							"raw": "{\r\n    \"expenseGroupId\": 46,\r\n    \"name\": \"Expense Name Test\",\r\n    \"description\": \"Expense Dscription Test\",\r\n    \"categoryId\": 1,\r\n    \"amount\": 600,\r\n    \"createdBy\": 6,\r\n    \"receiptURL\": \"htps://test.test/test003\",\r\n    \"receiptThumbnailURL\": \"htps://thumbnail.test/test003\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -714,7 +733,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\r\n        \r\n       \"expenseGroupId\":40,\r\n      \"name\":\"Expense Name 001\",\r\n      \"description\":\"Expense Dscription 001\",\r\n      \"categoryId\": 1,\r\n      \"amount\": 100,\r\n      \"createdBy\": 1,\r\n      \"receiptURL\": \"htps://test.test/test001\"\r\n      \r\n    }",
+							"raw": "{\r\n    \"expenseGroupId\": 46,\r\n    \"name\": \"Expense Name Test\",\r\n    \"description\": \"Expense Dscription Test\",\r\n    \"categoryId\": 1,\r\n    \"amount\": \"500\",\r\n    \"createdBy\": 5,\r\n    \"receiptURL\": \"htps://test.test/test003\",\r\n    \"receiptThumbnailURL\": \"htps://thumbnail.test/test003\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -722,13 +741,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expenses/10",
+							"raw": "{{baseUrl}}/expenses/31",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"expenses",
-								"10"
+								"31"
 							]
 						}
 					},
@@ -752,13 +771,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/expense/2",
+							"raw": "{{baseUrl}}/expenses/31",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"expense",
-								"2"
+								"expenses",
+								"31"
 							]
 						}
 					},
