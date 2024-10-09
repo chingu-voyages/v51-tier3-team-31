@@ -265,7 +265,6 @@ const getBalances = async (req: Request, res: Response) => {
   }
 };
 
-
 const getPayments = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
@@ -283,10 +282,9 @@ const getPayments = async (req: Request, res: Response) => {
     });
 
     if (expenseGroup) {
-      const expenseGroupBalances = await computePayments(expenseGroup);
-      //const expenseGroupPayments = await computePayments(expenseGroupBalances);
+      const expenseGroupPayments = await computePayments(expenseGroup);
 
-      res.status(200).json(expenseGroupBalances);
+      res.status(200).json(expenseGroupPayments);
     } else {
       res
         .status(404)
