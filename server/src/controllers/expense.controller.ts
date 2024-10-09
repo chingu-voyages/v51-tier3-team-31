@@ -11,6 +11,7 @@ const createExpense = async (req: Request, res: Response) => {
       amount,
       createdBy,
       receiptURL,
+      receiptThumbnailURL,
     } = req.body;
 
     const newExpense = await prisma.expense.create({
@@ -22,6 +23,7 @@ const createExpense = async (req: Request, res: Response) => {
         amount: parseInt(amount),
         createdBy: parseInt(createdBy),
         receiptURL,
+        receiptThumbnailURL,
       },
     });
     res.status(201).json(newExpense);
@@ -77,6 +79,7 @@ const updateExpense = async (req: Request, res: Response) => {
       amount,
       createdBy,
       receiptURL,
+      receiptThumbnailURL,
     } = req.body;
 
     const updatedExpense = await prisma.expense.update({
@@ -91,6 +94,7 @@ const updateExpense = async (req: Request, res: Response) => {
         amount: parseFloat(amount),
         createdBy: parseInt(createdBy),
         receiptURL,
+        receiptThumbnailURL,
       },
     });
     res.status(200).json(updatedExpense);
