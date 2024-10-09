@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { serverBaseUrl } from '../config';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Textarea } from '@/components/ui/textarea';
-import { X } from 'lucide-react';
+import { CircleCheck, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -21,6 +21,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Category } from '@/types/category';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Cloudinary } from '@cloudinary/url-gen';
+import CloudinaryUploadWidget from './CloudinaryUploadWidget';
 
 interface NewExpenseFormModalProps {
   toggleModal: () => void;
@@ -37,6 +39,43 @@ export default function NewExpenseFormModal({
 
   const { user } = useAuth();
   const queryClient = useQueryClient();
+
+  const [publicId, setPublicId] = useState('');
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUploadResponse, setImageUploadResponse] = useState<
+    null | 'success'
+  >(null);
+  const [cloudName] = useState('djhmtvmzq');
+  const [uploadPreset] = useState('z5g8jtym');
+
+  const [uwConfig] = useState({
+    cloudName,
+    uploadPreset,
+    cropping: true, //add a cropping step
+    // showAdvancedOptions: true,  //add advanced options (public_id and tag)
+    // sources: [ "local", "url"], // restrict the upload sources to URL and local files
+    // multiple: false,  //restrict upload to a single file
+    folder: 'splitit_images', //upload files to the specified folder
+    // tags: ["users", "profile"], //add the given tags to the uploaded files
+    // context: {alt: "user_uploaded"}, //add the given context data to the uploaded files
+    // clientAllowedFormats: ['.png', 'jpg', 'jpeg', 'webp'],//restrict uploading to image files only
+    // maxImageFileSize: 2000000,  //restrict file size to less than 2MB
+    // maxImageWidth: 2000, //Scales the image down to a width of 2000 pixels before uploading
+    // theme: "purple", //change to a purple theme
+  });
+
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: 'djhmtvmzq',
+    },
+  });
+
+  const myImage = cld.image(publicId);
+
+  useEffect(() => {
+    console.log('myImage: ', myImage);
+    console.log('publicId: ', publicId);
+  }, [myImage, publicId]);
 
   const FormSchema = z.object({
     expenseGroupId: z.number(),
@@ -59,9 +98,9 @@ export default function NewExpenseFormModal({
       description: '',
       createdBy: 0,
       amount: '0',
-      categoryId: '1',
+      categoryId: '',
       expenseGroupId: 0,
-      receiptURL: 'htps://test.test/test001',
+      receiptURL: '',
     },
   });
 
@@ -101,6 +140,12 @@ export default function NewExpenseFormModal({
       form.setValue('categoryId', categoryIdNumber.toString());
     }
   }, [user, form, expenseGroupId]);
+
+  useEffect(() => {
+    if (imageUrl) {
+      form.setValue('receiptURL', imageUrl);
+    }
+  }, [imageUrl]);
 
   return (
     <div
@@ -227,26 +272,17 @@ export default function NewExpenseFormModal({
             />
 
             {/* Receipt URL */}
-            <FormField
-              control={form.control}
-              name="receiptURL"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Receipt URL</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="url"
-                      placeholder="http://example.com/receipt"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Add a URL link to the receipt if available.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex items-center gap-3">
+              <CloudinaryUploadWidget
+                setImageUrl={setImageUrl}
+                setResponse={setImageUploadResponse}
+                uwConfig={uwConfig}
+                setPublicId={setPublicId}
+              />
+              <div className="div text-green-600">
+                {imageUploadResponse === 'success' && <CircleCheck size={28} />}
+              </div>
+            </div>
 
             <Button
               className="w-full"

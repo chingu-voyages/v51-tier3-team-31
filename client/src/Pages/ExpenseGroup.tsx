@@ -61,7 +61,7 @@ const ExpenseGroup = () => {
             <Balances expenseGroupId={expenseGroup?.id} />
           </TabsContent>
           <TabsContent value="photos">
-            <Photos />
+            <Photos expenses={expenseGroup?.expenses} />
           </TabsContent>
         </Tabs>
       </div>
