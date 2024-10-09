@@ -8,6 +8,7 @@ import { ThumbsUp, Receipt } from 'lucide-react';
 import { Balance } from '@/types/balance';
 import { Payment } from '@/types/payment';
 import { User } from '@/types/user';
+import { useAuth } from '@/hooks/useAuth';
 
 interface BalancesPropsType {
   expenseGroupId: number | undefined;
@@ -16,7 +17,6 @@ interface BalancesPropsType {
 const Balances = ({ expenseGroupId }: BalancesPropsType) => {
   const [balances, setBalances] = useState<Balance[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
-  const [needsBalancing, setNeedsBalancing] = useState<Boolean>(false);
   const [paymentsOfCurrentUser, setPaymentsOfCurrentUser] = useState<Payment[]>(
     []
   );
@@ -25,14 +25,7 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
   const { data: expenseGroupPayments } = usePayments(expenseGroupIdString!);
 
   // Temporary mock for user authentication
-  const user: User = {
-    id: 2,
-    googleId: '0',
-    name: 'Béla',
-    email: 'asdsda@asasd.com',
-    createdAt: '1',
-    updatedAt: '1',
-  };
+  const { user } = useAuth();
 
   // Set balances and payments when the data is fetched
   useEffect(() => {
@@ -55,22 +48,15 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
       });
       setPaymentsOfCurrentUser(filteredPayments);
     }
-  }, []);
+  }, [user, payments]);
 
-  useEffect(() => {
-    const needBalancing = paymentsOfCurrentUser.length > 0;
-    setNeedsBalancing(needBalancing);
-  }, [paymentsOfCurrentUser, user.id]);
-
-  const generateKey = (pre: any) => {
-    return `${pre}_${new Date().getTime()}`;
-  };
+  console.log({ userId: user?.id, paymentsOfCurrentUser });
 
   return (
     <div>
       <div className="flex flex-col gap-3 w-80 mx-auto mt-5">
         {/* Payment card */}
-        {!needsBalancing && (
+        {paymentsOfCurrentUser.length === 0 && (
           <Card>
             <CardContent className="flex justify-between rounded-md w-full items-center p-2">
               <div className="flex w-1/3 justify-center items-center text-slate-600">
@@ -85,15 +71,14 @@ const Balances = ({ expenseGroupId }: BalancesPropsType) => {
         )}
         {paymentsOfCurrentUser.map((payment) => (
           <PaymentCard
-            user={user}
-            key={generateKey(payment.fromUserEmail)}
+            key={`${payment.fromUserId}-${payment.toUserId}`}
             payment={payment}
           />
         ))}
         {/* Users' balances */}
         {balances.map((balance) => (
           <BalanceCard
-            key={generateKey(balance.userEmail)}
+            key={balance.userId}
             email={balance.userEmail}
             balance={balance}
           />
