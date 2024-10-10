@@ -1,6 +1,6 @@
 import { Expense } from '@/types/expense';
 import { DollarSign, Image } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
+import { Card } from './ui/card';
 import ReceiptModal from './ReceiptModal';
 import { useState } from 'react';
 
