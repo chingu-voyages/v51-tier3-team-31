@@ -42,6 +42,7 @@ export default function NewExpenseFormModal({
 
   const [publicId, setPublicId] = useState('');
   const [imageUrl, setImageUrl] = useState<string>('');
+  const [thumbnailURL, setThumbnailURL] = useState<string>('');
   const [imageUploadResponse, setImageUploadResponse] = useState<
     null | 'success'
   >(null);
@@ -88,7 +89,8 @@ export default function NewExpenseFormModal({
     categoryId: z.string(),
     amount: z.string(),
     createdBy: z.number(),
-    receiptURL: z.string().min(2),
+    receiptURL: z.string(),
+    receiptThumbnailURL: z.string(),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -101,6 +103,7 @@ export default function NewExpenseFormModal({
       categoryId: '',
       expenseGroupId: 0,
       receiptURL: '',
+      receiptThumbnailURL: '',
     },
   });
 
@@ -142,10 +145,11 @@ export default function NewExpenseFormModal({
   }, [user, form, expenseGroupId]);
 
   useEffect(() => {
-    if (imageUrl) {
+    if (imageUrl || thumbnailURL) {
       form.setValue('receiptURL', imageUrl);
+      form.setValue('receiptThumbnailURL', thumbnailURL);
     }
-  }, [imageUrl]);
+  }, [imageUrl, thumbnailURL]);
 
   return (
     <div
@@ -275,6 +279,7 @@ export default function NewExpenseFormModal({
             <div className="flex items-center gap-3">
               <CloudinaryUploadWidget
                 setImageUrl={setImageUrl}
+                setThumbnailURL={setThumbnailURL}
                 setResponse={setImageUploadResponse}
                 uwConfig={uwConfig}
                 setPublicId={setPublicId}
