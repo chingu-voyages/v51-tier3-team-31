@@ -9,6 +9,7 @@ interface CloudinaryUploadWidgetProps {
   uwConfig: object;
   setPublicId: (publicId: string) => void;
   setImageUrl: (url: string) => void;
+  setThumbnailURL: (url: string) => void;
   setResponse: (response: null | 'success') => void;
 }
 
@@ -36,6 +37,7 @@ function CloudinaryUploadWidget({
   setPublicId,
   setImageUrl,
   setResponse,
+  setThumbnailURL,
 }: CloudinaryUploadWidgetProps) {
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -66,6 +68,7 @@ function CloudinaryUploadWidget({
           if (!error && result && result.event === 'success') {
             console.log('Done! Here is the image info: ', result);
             setImageUrl(result.info.secure_url);
+            setThumbnailURL(result.info.thumbnail_url);
             setPublicId(result.info.public_id);
             setResponse(result.event);
           }
