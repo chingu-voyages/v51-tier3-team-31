@@ -3,9 +3,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
+import GoogleLoginBtn from '@/components/GoogleLoginBtn';
+import manWithKey from '@/assets/man-with-key.svg';
 
 const Login = () => {
-  const { isLoggedIn, login } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   const navigate = useNavigate();
 
@@ -16,41 +18,30 @@ const Login = () => {
   }, [isLoggedIn, navigate]);
 
   return (
-    <div className="flex flex-col min-h-screen justify-center items-center px-3">
-      <h1 className="text-xl max-w-xs text-center">
-        Sign in or create an account securely with Google.
-      </h1>
-      <div className="mt-8 felx flex-col max-w-sm">
-        <button
-          onClick={login}
-          className="px-4 py-2 w-full border flex gap-2  bg-primary-foreground  border-primary/10 rounded-lg my-3 text-primary   hover:text-primary/90 hover:shadow transition duration-150"
-        >
+    <div className="flex  font-montserrat">
+      <div className="flex-col min-h-screen hidden md:flex md:w-2/3 p-10 text-3xl lg:text-4xl xl:p-16">
+        <h1 className="xl:text-5xl text-[#192F45] font-montserrat font-medium max-w-3xl">
+          Sign in or create an account securely with Google.
+        </h1>
+        <div className="flex">
           <img
-            className="w-6 h-6"
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            loading="lazy"
-            alt="google logo"
+            src={manWithKey}
+            alt="man with a key opening a lock"
+            className=" w-full xl:w-2/3 mt-6"
           />
-          <span>Login with Google</span>
-        </button>
-        <button
-          onClick={login}
-          className="px-4 py-2 w-full border flex gap-2 border-primary/10 rounded-lg my-3 text-secondary bg-slate-600 hover:text-secondary hover:shadow transition duration-150"
-        >
-          <img
-            className="w-6 h-6"
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-            loading="lazy"
-            alt="google logo"
-          />
-          <span>Register with Google</span>
-        </button>
+        </div>
       </div>
-      <p className="text-center text-md my-5 font-medium text-slate-600">No fees, no fuss!</p>
-      <p className="text-center max-w-sm text-sm text-slate-600">
-       <span className='text-blue-600' >Splitit&#8482;</span>  is completely free to use—no credit card required. Enjoy
-        seamless expense management without any hidden costs or subscriptions.
-      </p>
+      <div className="flex-col gap-4 justify-center p-10 xl:p-16 min-h-screen flex w-full md:w-1/3 bg-custom-gradient-dark text-white/90">
+        <h2 className="text-2xl font-medium">No fees, no fuss</h2>
+        <p className="font-light">
+          <span className="font-semibold">Splitit™</span>  is completely free to
+          use—no credit card required. Enjoy seamless expense management without
+          any hidden costs or subscriptions.
+        </p>
+        <div className="mt-1">
+          <GoogleLoginBtn />
+        </div>
+      </div>
     </div>
   );
 };
