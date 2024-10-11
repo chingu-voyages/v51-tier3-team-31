@@ -1,6 +1,3 @@
-# ![Logo](client/public/splitit.svg) Splitit
-## ![Logo](client/public/splitit.svg) Overview
-
 # Splitit: Split Expenses, Keep Friendships
 
 Say goodbye to awkward money talks and hello to hassle-free shared expenses!
@@ -32,7 +29,7 @@ Happy splitting, happy friends! 🎊💸
 
 *This application was developed as a learning project for Chingu Voyage 51.*
 
-### Preview
+## Preview
 ![Preview](client/public/splititPreview.png)
 
 ## Tech stack
@@ -76,7 +73,7 @@ Happy splitting, happy friends! 🎊💸
 * Lucidspark for User flows
 
 
-## ![Logo](client/public/splitit.svg) Features
+## Features
 
 1. **Google Authentication**:
 * Google Authentication is implemented, allowing users to securely log in using their Google accounts.
@@ -122,8 +119,8 @@ Happy splitting, happy friends! 🎊💸
 7. **Analytics**:
 * **(TODO)** One or more analytics chart are available for consultation
 
-## ![Logo](client/public/splitit.svg) Running the project 
-### Live site
+## Running the project 
+### Live site:
 [Splitit](https://splitit-j0gt.onrender.com/)
 
 ### From the repo:
@@ -132,7 +129,7 @@ Happy splitting, happy friends! 🎊💸
 3. Run `npm start` in your bash/command line on server folder
 4. Run `npm run dev` in your bash/command line on client folder
 
-## ![Logo](client/public/splitit.svg) Client Dependencies:
+## Client Dependencies:
 
 * @hookform/resolvers
 * @radix-ui/react
@@ -149,7 +146,7 @@ Happy splitting, happy friends! 🎊💸
 * tailwindcss-animate
 * zod
 
-## ![Logo](client/public/splitit.svg) Client DevDependencies
+## Client DevDependencies
 
 * @eslint/js
 * @types/node
@@ -167,7 +164,7 @@ Happy splitting, happy friends! 🎊💸
 * typescript-eslint
 * vite
 
-## ![Logo](client/public/splitit.svg) Server Dependencies
+## Server Dependencies
 
 * @prisma/client
 * cors
@@ -180,7 +177,7 @@ Happy splitting, happy friends! 🎊💸
 * zod
 * zod-openapi
 
-## ![Logo](client/public/splitit.svg) Server DevDependencies
+## Server DevDependencies
 
 * @types/cookie-parser
 * @types/cors
@@ -202,9 +199,6 @@ Happy splitting, happy friends! 🎊💸
 - **login/register**: `GET /api/v1/auth/google`
 - **logout**: `GET /api/v1/auth/logout`
 - **Refresh Access Token**: `POST /api/v1/auth/refresh-token`
-
-### ExpenseGroup Routes
-
 
 ## Our Team
 
