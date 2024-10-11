@@ -3,6 +3,10 @@ import { prisma } from "../server";
 import { sendEmail } from "../utils/emailUtils"; // Updated import
 import { computeBalances } from "../useCases/computeBalances";
 import { computePayments } from "../useCases/computePayments";
+import dotenv from "dotenv";
+import { string } from "zod";
+
+dotenv.config();
 
 const createExpenseGroup = async (req: Request, res: Response) => {
   try {
@@ -135,22 +139,15 @@ const inviteParticipant = async (req: Request, res: Response) => {
       },
     });
 
-    try {
-      await sendEmail(
-        invitedEmail,
-        "You were invited to be part of a SplitIt Expense Group",
-        `You were invited to be part of a SplitIt Expense Group (id: ${expenseGroupId})
-        Please click here to Accept.
-        Please click here to Decline.
-        
-        Thanks
-        SplitIt Team`
-      );
+    const expenseGroup = await prisma.expenseGroup.findUnique({where: { id: newInvitation.expenseGroupId }});
+    const invitingUser = await prisma.user.findUnique({where: { id:newInvitation.sentBy }});
 
-      console.log("Email sent to: " + invitedEmail);
-    } catch (error) {
-      console.log("Error sending email: " + error);
-    }
+    await sendEmail(
+      invitedEmail,
+      "You were invited to be part of a SplitIt Expense Group",
+      "",
+      composeEmailBody(expenseGroup?.name, invitingUser?.name),
+    );
 
     res.status(200).json(newInvitation);
   } catch (e) {
@@ -310,6 +307,43 @@ const getPayments = async (req: Request, res: Response) => {
   } catch (e) {
     res.status(500).json({ error: e });
   }
+};
+
+const composeEmailBody = (expenseGroupName?: string, invitingUserName?: string) => {
+  return `
+  
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Email Title</title>
+    <style type="text/css">
+        /* Add your CSS here */
+    </style>
+</head>
+<body>
+    <p>Hi there,</p>
+
+<p>You have been invited by ${invitingUserName} to join the expense group ${expenseGroupName} on SplitIt.</p>
+
+<p>To accept the invitation, please log in to your SplitIt account or create one if you don’t have an account yet. Once you’re logged in, you can accept the invitation.</p>
+
+<p>Click the link below to get started: <br>
+<a href="${process.env.CLIENT_HOME_PAGE_URL}/login">Log in to SplitIt</a>
+</p>
+
+<p>If the link above doesn’t work, you can also copy and paste this link into your browser: <br>
+${process.env.CLIENT_HOME_PAGE_URL}/login
+</p>
+
+<p>We look forward to having you in the group!</p>
+
+
+<p>Best regards, <br>
+The SplitIt Team </p>
+</body>
+</html>
+  `;
 };
 
 export default {
