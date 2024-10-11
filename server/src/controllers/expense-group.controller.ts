@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../server";
+import { sendEmail } from "../utils/emailUtils"; // Updated import
 import { computeBalances } from "../useCases/computeBalances";
-
 import { computePayments } from "../useCases/computePayments";
 
 const createExpenseGroup = async (req: Request, res: Response) => {
@@ -134,6 +134,23 @@ const inviteParticipant = async (req: Request, res: Response) => {
         invitedEmail,
       },
     });
+
+    try {
+      await sendEmail(
+        invitedEmail,
+        "You were invited to be part of a SplitIt Expense Group",
+        `You were invited to be part of a SplitIt Expense Group (id: ${expenseGroupId})
+        Please click here to Accept.
+        Please click here to Decline.
+        
+        Thanks
+        SplitIt Team`
+      );
+
+      console.log("Email sent to: " + invitedEmail);
+    } catch (error) {
+      console.log("Error sending email: " + error);
+    }
 
     res.status(200).json(newInvitation);
   } catch (e) {
